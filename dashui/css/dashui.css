@@ -326,3 +326,84 @@ div#dui_editor {
     bottom: 5%;
     right: 5%;
 }
+
+#add_view{
+    margin-left: 5px;
+}
+#new_view_name{
+    height: 21px;
+    width: 148px;
+
+}
+#del_view{
+    width: 130px;
+    margin-left: 5px;
+    margin-top: -4px;
+
+}
+#rename_view{
+    width: 130px;
+    margin-left: 5px;
+
+}
+#new_name{
+    height: 21px;
+    width: 256px;
+    margin-top: 5px;
+}
+#dup_view{
+
+}
+.select_view{
+    height: 29px !important;
+    width: 262px !important;
+
+}
+.inspect_view_theme{
+    width: 297px !important;
+    margin-right: -5px;
+
+}
+.select_set{
+    width: 400px !important;
+    height: 29px !important;
+}
+.select_tpl{
+    width: 400px !important;
+    height: 29px !important;
+    margin-top: 5px;
+}
+#add_widget{
+    margin-top: 5px;
+
+}
+.ui-multiselect-checkboxes {
+    background: inherit;
+}
+.select_active_widget{
+    height: 29px;
+    width: 400px !important;
+
+}
+#del_widget{
+    width: 142px;
+
+}
+#widget_doc{
+
+}
+#dup_widget{
+    width: 142px;
+
+}
+.select_view_copy{
+    height: 29px;
+    width: 246px !important;
+
+}
+#widget_attrs{
+    display: block;
+    overflow: hidden;
+    width: 400px !important;
+
+}
