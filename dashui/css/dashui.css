@@ -463,6 +463,6 @@ div#dui_editor {
 #widget_attrs {
     display: block;
     overflow: hidden;
-    width: 400px !important;
+    max-width: 433px;
 
 }

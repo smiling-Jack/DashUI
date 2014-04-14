@@ -462,7 +462,7 @@ dui = $.extend(true, dui, {
     },
     editColor: function (widget, wid_attr) {
         // Color selector
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td>' + this.translate(wid_attr) + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="44" style="width:90%" /><input id="inspect_' + wid_attr + 'Btn"  style="width:8%" type="button" value="..."></td></tr>');
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td>' + this.translate(wid_attr) + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30" /><input id="inspect_' + wid_attr + 'Btn"  style="width:26px" type="button" value="..."></td></tr>');
         if (colorSelect) {
             var btn = document.getElementById("inspect_" + wid_attr + "Btn");
             if (btn) {
@@ -529,7 +529,9 @@ dui = $.extend(true, dui, {
                 $(this).autocomplete("search", "");
             }).keyup(function () {
                 this._save();
-            }).val(widget.data[wid_attr]);
+            }).val(widget.data[wid_attr])
+                .css({'max-width':"281px"})
+
         }
     },
     editEffects: function (widget, wid_attr) {
@@ -613,7 +615,7 @@ dui = $.extend(true, dui, {
         max = (max === undefined || max === null || max == "") ? 0 : parseFloat(max);
         step = (!step) ? (max - min) / 100 : parseFloat(step);
         // Image src
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td>' + this.translate(wid_attr) + ':</td><td><table style="width:100%" class="dashui-no-spaces"><tr class="dashui-no-spaces"><td  class="dashui-no-spaces" style="width:50px"><input type="text" id="inspect_' + wid_attr + '" size="5"/></td><td  class="dashui-no-spaces" style="width:20px">' + min + '</td><td><div id="inspect_' + wid_attr + '_slider"></div></td><td  class="dashui-no-spaces" style="width:20px;text-align:right">' + max + '</td></tr></table></td></tr>');
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td>' + this.translate(wid_attr) + ':</td><td><table style="width:100% ;min-width:238px" class="dashui-no-spaces"><tr class="dashui-no-spaces"><td  class="dashui-no-spaces" style="width:50px"><input type="text" id="inspect_' + wid_attr + '" size="5"/></td><td  class="dashui-no-spaces" style="width:20px">' + min + '</td><td><div id="inspect_' + wid_attr + '_slider" style="width:100%"></div></td><td  class="dashui-no-spaces" style="width:20px;text-align:right">' + max + '</td></tr></table></td></tr>');
 
         var slider = $("#inspect_" + wid_attr + "_slider");
         slider.slider({
@@ -871,7 +873,7 @@ dui = $.extend(true, dui, {
                                 }
                                 catch (e) {
                                     type = null;
-                                    $("#widget_attrs").append('<tr id="option_' + wid_attr_ + '" class="dashui-add-option"><td class="dashui-edit-td-caption">' + this.translate(wid_attr_) + ':</td><td><input type="text" id="inspect_' + wid_attr_ + '" size="35"/></td></tr>');
+                                    $("#widget_attrs").append('<tr id="option_' + wid_attr_ + '" class="dashui-add-option"><td class="dashui-edit-td-caption">' + this.translate(wid_attr_) + ':</td><td><input type="text" id="inspect_' + wid_attr_ + '" size="30"/></td></tr>');
                                 }
                             }
 
@@ -923,11 +925,11 @@ dui = $.extend(true, dui, {
                             }
                         } else {
                             // html
-                            $("#widget_attrs").append('<tr id="option_' + wid_attr_ + '" class="dashui-add-option"><td class="dashui-edit-td-caption">' + this.translate(wid_attr_) + ':</td><td><input type="text" id="inspect_' + wid_attr_ + '" size="35"/></td></tr>');
+                            $("#widget_attrs").append('<tr id="option_' + wid_attr_ + '" class="dashui-add-option"><td class="dashui-edit-td-caption">' + this.translate(wid_attr_) + ':</td><td><input type="text" id="inspect_' + wid_attr_ + '" size="30"/></td></tr>');
                         }
                     } else {
                         // Text area
-                        $("#widget_attrs").append('<tr id="option_' + wid_attr_ + '" class="dashui-add-option"><td class="dashui-edit-td-caption">' + this.translate(wid_attr_) + ':</td><td><textarea id="inspect_' + wid_attr_ + '" rows="2" cols="35"></textarea></td></tr>');
+                        $("#widget_attrs").append('<tr id="option_' + wid_attr_ + '" class="dashui-add-option"><td class="dashui-edit-td-caption">' + this.translate(wid_attr_) + ':</td><td><textarea id="inspect_' + wid_attr_ + '" rows="2" cols="30"></textarea></td></tr>');
                     }
 
                     if (!isCustomEdit) {
@@ -1162,8 +1164,8 @@ dui = $.extend(true, dui, {
             .dialog({
                 modal: false,
                 autoOpen: false,
-                width: 450,
-                minWidth: 451,
+                width: 480,
+                minWidth: 481,
                 height: $(window).height() - 100,
                 position: { my: "right top", at: "right top", of: window },
                 dialogClass: "dui-editor-dialog",
