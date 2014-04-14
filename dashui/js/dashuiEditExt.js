@@ -218,7 +218,7 @@ dui = $.extend(true, dui, {
             }
             
             $('#'+nameImg).css  ({width: htmlElem.settings.height*2, height: htmlElem.settings.height - 4}).addClass ('ui-corner-all');
-            $('#'+nameText).css ({width: htmlElem.settings.width});
+            $('#'+nameText).css ({width: "145px" });/*htmlElem.settings.width*/
             $('#'+nameBtn).button ({icons: {primary: "ui-icon-circle-triangle-s"}, text: false});
             $('#'+nameBtn).click (htmlElem, function (e) {
                 dui.styleSelect._toggleDrop(e.data);
@@ -299,7 +299,7 @@ dui = $.extend(true, dui, {
                     
                 var iWidth = $("#styleSelect"+obj.settings.id).width();
                 elemBox.buttonset().find('table').width(iWidth - 37 - this._scrollWidth);
-                $("#styleSelectBox"+obj.settings.id).css ({display: "", width: elem.width(), top: elem.position().top + elem.height(), left: elem.position().left});			
+                $("#styleSelectBox"+obj.settings.id).css ({display: "", width: elem.width(), top: elem.position().top + elem.height(), left: elem.position().left});
                 $("#styleSelectB"+obj.settings.id).button("option", {icons: { primary: "ui-icon-circle-triangle-n" }});
                 obj.settings.dropOpened = true;
             }

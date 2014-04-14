@@ -1200,7 +1200,7 @@ dui = $.extend(true, dui, {
             $(this).multiselect({
                 multiple: false,
                 header: false,
-                noneSelectedText: false,
+//                noneSelectedText: false,
                 selectedList: 1,
                 minWidth: $(this).attr("data-multiselect-width"),
                 height: $(this).attr("data-multiselect-height"),
@@ -1215,7 +1215,7 @@ dui = $.extend(true, dui, {
             $(this).multiselect({
                 multiple: false,
                 header: false,
-                noneSelectedText: false,
+//                noneSelectedText: false,
                 selectedList: 1,
                 minWidth: 250,
                 height: 410,
@@ -1230,7 +1230,7 @@ dui = $.extend(true, dui, {
             $(this).multiselect({
                 multiple: false,
                 header: false,
-                noneSelectedText: false,
+//                noneSelectedText: false,
                 selectedList: 1,
                 minWidth: 420,
                 height: 340,

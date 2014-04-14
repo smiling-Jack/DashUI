@@ -1,9 +1,10 @@
-:focus { outline: none; }
-
+:focus {
+    outline: none;
+}
 
 div#dui_container {
     -webkit-touch-callout: none;
-    -webkit-tap-highlight-color:rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
     -ms-touch-select: none;
     -ms-touch-action: none;
@@ -25,8 +26,8 @@ div#dui_container {
 }
 
 .dashui-view {
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
     position: absolute;
     top: 0;
 }
@@ -37,33 +38,37 @@ div#dui_container {
     width: 50px;
     height: 50px;
 }
+
 .tplSpanOnOff-on {
     background-color: green;
     text-shadow: none;
 }
+
 .tplSpanOnOff-off {
 
 }
+
 .ui-slider-vertical {
 
     height: 93%;
 }
+
 .ui-dialog .ui-dialog-content {
     padding: .5em 0em;
 }
-
 
 #widget_helper {
     border: 1px dashed white;
     position: absolute;
     z-index: 90;
-    pointer-events:none;
+    pointer-events: none;
 }
+
 #widget_inner_helper {
     border: 1px dashed black;
-    pointer-events:none;
-	width:100%;
-	height:100%;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
 }
 
 .dashui-widget-button {
@@ -75,38 +80,38 @@ div#dui_container {
     width: 100%;
     height: 100%;
 }
+
 @-webkit-keyframes dashui-waitico-rotate {
-	from {
-		-webkit-transform:rotate(0deg);
-	}
-	to {
-		-webkit-transform:rotate(360deg);
-	}
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
 }
+
 #dashui-waitico {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin: -24px 0 0 -24px;
-	height: 48px;
-	width: 48px;
-	text-indent: 250px;
-	white-space: nowrap;
-	overflow: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -24px 0 0 -24px;
+    height: 48px;
+    width: 48px;
+    text-indent: 250px;
+    white-space: nowrap;
+    overflow: hidden;
     background: url(../img/gear-icon-md.png);
     background-size: 100% auto;
-	-webkit-animation-duration: 2s;
-	-webkit-animation-name: dashui-waitico-rotate;
-	-webkit-animation-iteration-count: infinite;
-	-webkit-animation-timing-function: linear;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-name: dashui-waitico-rotate;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
 }
 
 .noTitle .ui-dialog-titlebar {
-    display:none;
+    display: none;
     margin-top: 30px;
 }
-
-
 
 button.ui-dialog-titlebar-close {
     width: 30px !important;
@@ -119,95 +124,108 @@ div.dui-editor-dialog div div button.ui-dialog-titlebar-close {
     margin-top: -4px !important;
 }
 
-
 a.ui-dialog-titlebar-minimize {
     width: 26px !important;
     height: 26px !important;
     padding: 1px !important;
     margin-top: -4px !important;
 }
+
 a.ui-dialog-titlebar-restore {
     width: 26px !important;
     height: 26px !important;
     padding: 1px !important;
     margin-top: -4px !important;
 }
-.ui-dialog-titlebar-restore span{
+
+.ui-dialog-titlebar-restore span {
     margin-top: 5px !important;
-    margin-left:5px !important;
+    margin-left: 5px !important;
 }
-.ui-dialog-titlebar-minimize span{
+
+.ui-dialog-titlebar-minimize span {
     margin-top: 5px !important;
-    margin-left:5px !important;
+    margin-left: 5px !important;
 }
+
 .dashui-edit-tab h4 {
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 12pt;
-	font-weight: bold;
-	padding-top: 0;
-	padding-bottom: 0px;
-	padding-left: 6px;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 12pt;
+    font-weight: bold;
+    padding-top: 0;
+    padding-bottom: 0px;
+    padding-left: 6px;
     width: 100%;
-    border-top: 1px dotted white;  
+    border-top: 1px dotted white;
     border-left: 1px dotted white;
 }
+
 .dashui-no-spaces {
     padding: 0px;
     margin: 0px;
     border: 0px;
-    border-spacing:0px;
+    border-spacing: 0px;
 }
+
 .dashui-wait-screen {
-	width: 100%;
-	height: 100%;
-	z-index: 5000;
-/*	background: -moz-linear-gradient(top,  rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%); 
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.65)), color-stop(100%,rgba(0,0,0,0)));
-	background: -webkit-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); 
-	background: -o-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); 
-	background: -ms-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%);
-	background: linear-gradient(to bottom,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%); 
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); */
+    width: 100%;
+    height: 100%;
+    z-index: 5000;
+    /*	background: -moz-linear-gradient(top,  rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.65)), color-stop(100%,rgba(0,0,0,0)));
+        background: -webkit-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%);
+        background: -o-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%);
+        background: -ms-linear-gradient(top,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%);
+        background: linear-gradient(to bottom,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); */
 }
+
 .dashui-progressbar {
-	position: absolute;
-	top: 50%;
-	left: 38%;
-	width: 20%;
+    position: absolute;
+    top: 50%;
+    left: 38%;
+    width: 20%;
 }
 
 .dashui-wait-text {
-	position: absolute;
-	top: 10%;
-	left: 38%;
-	font-family: 'trebuchet MS', sans-serif;
-	color: #525252;
-	font-size: 1.5em;
-	font-weight: bold;
-	font-variant: small-caps;
+    position: absolute;
+    top: 10%;
+    left: 38%;
+    font-family: 'trebuchet MS', sans-serif;
+    color: #525252;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-variant: small-caps;
 }
+
 .dashui-show-new {
-	border: 3px dotted rgba(167,232,226,0.9) ;
-	z-index: 1;
-    pointer-events:none;
+    border: 3px dotted rgba(167, 232, 226, 0.9);
+    z-index: 1;
+    pointer-events: none;
 }
+
 .dashui-edit-td-caption {
-	width: 26%;
+    width: 26%;
 }
+
 .dashui-edit-td-field {
-	width: 74%;
+    width: 74%;
 }
+
 .dashui-edit-textbox {
-	width: 100%;
+    width: 100%;
 }
+
 .dashui-edit-select {
-	width: auto;
+    width: auto;
 }
+
 .dashui-wizard-select {
-	width: 200px;
+    width: 200px;
 }
+
 .dashui-group-button-width {
-    width:100%;
+    width: 100%;
     font-weight: bold;
 }
 
@@ -216,8 +234,8 @@ a.ui-dialog-titlebar-restore {
     height: 80%;
     height: calc(100% - 50px);
     overflow-y: scroll;
-    padding-left:5px !important;
-    padding-top:0px !important;
+    padding-left: 5px !important;
+    padding-top: 0px !important;
 
 }
 
@@ -229,10 +247,9 @@ div#tabs {
 }
 
 div#dui_editor {
-    overflow-y:hidden;
-    oberflow-x:scroll;
+    overflow-y: hidden;
+    oberflow-x: scroll;
 }
-
 
 .dashui-steal-css, .dashui-clear-css {
     display: inline-block;
@@ -250,158 +267,200 @@ div#dui_editor {
     width: 17px;
     height: 17px;
 }
+
 #css_table {
     width: 400px;
     font-size: 11px;
 }
 
 .editmode-helper {
-    display: none; position: absolute; width:100%; height: 100%;
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
     background: url(../img/editmode-pattern.png);
-    z-index:89
+    z-index: 89
 }
 
 .dashui-wait-screen {
-    position: absolute; top: 0; left: 0; height:100%; width:100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
 }
+
 /* Sample for table widget */
 .tclass-overflow {
     overflow-y: auto;
 }
+
 .tclass {
     border: 1px solid black;
     width: 100%;
     overflow-y: scroll;
 }
+
 .tclass-th {
     background-color: black;
     color: white;
     font-weight: bold;
 }
+
 .tclass-th1 {
     /*width: 100px;*/
 }
+
 .tclass-th2 {
     /*width: 50px;*/
 }
+
 .tclass-th3 {
     /*width: 40px;*/
 }
+
 .tclass-tr {
     color: black;
 }
+
 .tclass-tr-even {
     background-color: darkgray;
 }
+
 .tclass-tr-odd {
     background-color: lightgray;
 }
+
 .tclass-tr:hover {
-    color:blue;
+    color: blue;
     cursor: pointer;
 }
+
 .tclass-tr-selected {
     background-color: green;
-/*    color: white;*/
+    /*    color: white;*/
 }
+
 .tclass-detail {
-     width: 100%
- }
+    width: 100%
+}
+
 .tclass-detail-tr {
     width: 100%
 }
+
 .tclass-detail-tr-even {
 }
+
 .tclass-detail-tr-odd {
 }
+
 .tclass-detail-td-name {
-    width:200px;
+    width: 200px;
     font-weight: bold;
 }
 
 .tclass-detail-td-value {
 }
+
 .tclass-print-button {
     position: absolute;
     bottom: 5%;
     right: 5%;
 }
 
-#add_view{
+#add_view {
     margin-left: 5px;
 }
-#new_view_name{
+
+#new_view_name {
     height: 21px;
     width: 148px;
 
 }
-#del_view{
+
+#del_view {
     width: 130px;
     margin-left: 5px;
     margin-top: -4px;
 
 }
-#rename_view{
+
+#rename_view {
     width: 130px;
     margin-left: 5px;
 
 }
-#new_name{
+
+#new_name {
     height: 21px;
     width: 256px;
     margin-top: 5px;
 }
-#dup_view{
+
+#dup_view {
 
 }
-.select_view{
-    height: 29px !important;
+
+.select_view {
     width: 262px !important;
+    min-height: 29px;
 
 }
-.inspect_view_theme{
+
+.inspect_view_theme {
     width: 297px !important;
     margin-right: -5px;
 
 }
-.select_set{
+
+.select_set {
     width: 400px !important;
-    height: 29px !important;
+    min-height: 29px !important;
 }
-.select_tpl{
+
+.select_tpl {
     width: 400px !important;
-    height: 29px !important;
+    min-height: 29px !important;
     margin-top: 5px;
 }
-#add_widget{
+
+#add_widget {
     margin-top: 5px;
 
 }
+
 .ui-multiselect-checkboxes {
     background: inherit;
 }
-.select_active_widget{
-    height: 29px;
+
+.select_active_widget {
+    min-height: 29px;
     width: 400px !important;
 
 }
-#del_widget{
+
+#del_widget {
     width: 142px;
 
 }
-#widget_doc{
+
+#widget_doc {
 
 }
-#dup_widget{
+
+#dup_widget {
     width: 142px;
 
 }
-.select_view_copy{
+
+.select_view_copy {
     height: 29px;
     width: 246px !important;
 
 }
-#widget_attrs{
+
+#widget_attrs {
     display: block;
     overflow: hidden;
     width: 400px !important;
