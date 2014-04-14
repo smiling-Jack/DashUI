@@ -205,11 +205,13 @@ a.ui-dialog-titlebar-restore {
 }
 
 .dashui-edit-td-caption {
-    width: 26%;
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
 }
 
 .dashui-edit-td-field {
-    width: 74%;
+    width: auto;
 }
 
 .dashui-edit-textbox {
@@ -464,5 +466,10 @@ div#dui_editor {
     display: block;
     overflow: hidden;
     max-width: 433px;
+
+}
+.dashui-edit-td-wid_attr{
+    width: 90px;
+    min-width: 90px;
 
 }

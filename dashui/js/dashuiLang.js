@@ -67,7 +67,7 @@ dui = $.extend(true, dui, {
                 "Inspecting Widget:":{"en" : "Inspecting Widget:", "de": "Widget inspizieren:","ru": "Редактировать элемет:"},
                 "Widget Attributes:":{"en" : "Widget Attributes:", "de": "Widget-Eigenschaften:","ru": "Свойства элемета:"},
                 "filter_key"       : {"en" : "Filter key:",  "de": "Filterwort:",          "ru": "Фильтр:"},
-                "Show in views:"   : {"en" : "Show in views:","de": "Zeige in Views:",     "ru": "Показать на страницах:"},
+                "Show in :"        : {"en" : "Show in :","de": "Zeige in :",     "ru": "Показать на страницах:"},                          /*Edit*/
                 "Background class" : {"en" : "Background class:","de": "Hintergrundklasse:","ru": "CSS класс фона:"},
                 "Webseite"         : {"en" : "Web link",      "de": "Webseite",            "ru": "Веб сайт"},
                 "none selected"    : {"en" : "none selected","de": "nichst selektiert",    "ru": "ничего не выбрано"},

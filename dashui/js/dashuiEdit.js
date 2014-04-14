@@ -389,7 +389,7 @@ dui = $.extend(true, dui, {
     },
     editObjectID: function (widget, wid_attr, widget_filter) {
         // Edit for Homematic ID
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td>' + this.translate(wid_attr) + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="5"><input type="button" id="inspect_' + wid_attr + '_btn" value="..."  style="width:30px"><div id="inspect_' + wid_attr + '_desc"></div></td></tr>');
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr) + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="5"><input type="button" id="inspect_' + wid_attr + '_btn" value="..."  style="width:30px"><div id="inspect_' + wid_attr + '_desc"></div></td></tr>');
         document.getElementById("inspect_" + wid_attr + "_btn").jControl = wid_attr;
         $("#inspect_" + wid_attr + "_desc").html(dui.getObjDesc(widget.data[wid_attr]));
         // Select Homematic ID Dialog
@@ -462,7 +462,7 @@ dui = $.extend(true, dui, {
     },
     editColor: function (widget, wid_attr) {
         // Color selector
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td>' + this.translate(wid_attr) + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30" /><input id="inspect_' + wid_attr + 'Btn"  style="width:26px" type="button" value="..."></td></tr>');
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr) + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30" /><input id="inspect_' + wid_attr + 'Btn"  style="width:26px" type="button" value="..."></td></tr>');
         if (colorSelect) {
             var btn = document.getElementById("inspect_" + wid_attr + "Btn");
             if (btn) {
@@ -481,7 +481,7 @@ dui = $.extend(true, dui, {
     },
     editViewName: function (widget, wid_attr) {
         // View selector
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td>' + this.translate(wid_attr) + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="44"/></td></tr>');
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0]+ " View") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
 
         // autocomplete for filter key
         var elem = document.getElementById('inspect_' + wid_attr);
@@ -536,7 +536,67 @@ dui = $.extend(true, dui, {
     },
     editEffects: function (widget, wid_attr) {
         // Effect selector
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td>' + this.translate(wid_attr) + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="44"/></td></tr>');
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0]+" effect") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
+
+        // autocomplete for filter key
+        var elem = document.getElementById('inspect_' + wid_attr);
+        if (elem) {
+            elem._save = function () {
+                if (this.timer)
+                    clearTimeout(this.timer);
+
+                this.timer = _setTimeout(function (elem_) {
+                    // If really changed
+                    var $this = $(elem_);
+                    var attr = $this.attr("id").slice(8);
+                    dui.widgets[dui.activeWidget].data.attr(attr, $this.val());
+                    dui.views[dui.activeView].widgets[dui.activeWidget].data[attr] = $this.val();
+                    dui.saveRemote();
+                }, 200, this);
+            };
+
+            $(elem).autocomplete({
+                minLength: 0,
+                source: function (request, response) {
+                    var effects = ['',
+                        'show',
+                        'blind',
+                        'bounce',
+                        'clip',
+                        'drop',
+                        'explode',
+                        'fade',
+                        'fold',
+                        'highlight',
+                        'puff',
+                        'pulsate',
+                        'scale',
+                        'shake',
+                        'size',
+                        'slide'];
+
+                    var data = $.grep(effects, function (value) {
+                        return value.substring(0, request.term.length).toLowerCase() == request.term.toLowerCase();
+                    });
+
+                    response(data);
+                },
+                select: function (event, ui) {
+                    this._save();
+                },
+                change: function (event, ui) {
+                    this._save();
+                }
+            }).focus(function () {
+                $(this).autocomplete("search", "");
+            }).keyup(function () {
+                this._save();
+            }).val(widget.data[wid_attr]);
+        }
+    },
+    editEffects_opt: function (widget, wid_attr) {
+        // Effect selector
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0]+"options") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
 
         // autocomplete for filter key
         var elem = document.getElementById('inspect_' + wid_attr);
@@ -596,7 +656,7 @@ dui = $.extend(true, dui, {
     },
     editImage: function (widget, wid_attr) {
         // Image src
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td>' + this.translate(wid_attr) + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="44"/><input type="button" id="inspect_' + wid_attr + '_btn" value="..."></td></tr>');
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr) + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="44"/><input type="button" id="inspect_' + wid_attr + '_btn" value="..."></td></tr>');
         document.getElementById("inspect_" + wid_attr + "_btn").jControl = wid_attr;
         // Select image Dialog
         $("#inspect_" + wid_attr + "_btn").click(function () {
@@ -615,7 +675,7 @@ dui = $.extend(true, dui, {
         max = (max === undefined || max === null || max == "") ? 0 : parseFloat(max);
         step = (!step) ? (max - min) / 100 : parseFloat(step);
         // Image src
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td>' + this.translate(wid_attr) + ':</td><td><table style="width:100% ;min-width:238px" class="dashui-no-spaces"><tr class="dashui-no-spaces"><td  class="dashui-no-spaces" style="width:50px"><input type="text" id="inspect_' + wid_attr + '" size="5"/></td><td  class="dashui-no-spaces" style="width:20px">' + min + '</td><td><div id="inspect_' + wid_attr + '_slider" style="width:100%"></div></td><td  class="dashui-no-spaces" style="width:20px;text-align:right">' + max + '</td></tr></table></td></tr>');
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr) + ':</td><td><table style="width:100% ;min-width:238px" class="dashui-no-spaces"><tr class="dashui-no-spaces"><td  class="dashui-no-spaces" style="width:50px"><input type="text" id="inspect_' + wid_attr + '" size="5"/></td><td  class="dashui-no-spaces" style="width:20px">' + min + '</td><td><div id="inspect_' + wid_attr + '_slider" style="width:100%"></div></td><td  class="dashui-no-spaces" style="width:20px;text-align:right">' + max + '</td></tr></table></td></tr>');
 
         var slider = $("#inspect_" + wid_attr + "_slider");
         slider.slider({
@@ -743,6 +803,7 @@ dui = $.extend(true, dui, {
                 //              color
                 //              views
                 //              effect
+                //              eff_opt
                 //              fontName
                 //              slide,min,max,step - Default step is ((max - min) / 100)
                 //              select_value1,select_value2,...
@@ -863,6 +924,9 @@ dui = $.extend(true, dui, {
                         isCustomEdit = true;
                     } else if (wid_attr_.indexOf("_effect") != -1 || type == "effect") {
                         dui.editEffects(widget, wid_attr_);
+                        isCustomEdit = true;
+                    } else if (wid_attr_.indexOf("_eff_opt") != -1 || type == "effect") {
+                        dui.editEffects_opt(widget, wid_attr_);
                         isCustomEdit = true;
                     } else if (wid_attr_.slice(0, 4) !== "html") {
                         if (type !== null) {
