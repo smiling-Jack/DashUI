@@ -481,7 +481,7 @@ dui = $.extend(true, dui, {
     },
     editViewName: function (widget, wid_attr) {
         // View selector
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0]+ " View") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0] + " View") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
 
         // autocomplete for filter key
         var elem = document.getElementById('inspect_' + wid_attr);
@@ -507,6 +507,7 @@ dui = $.extend(true, dui, {
 
             $(elem).autocomplete({
                 minLength: 0,
+                appendTo: $(elem).parent(),
                 source: function (request, response) {
                     var views = [];
                     for (var v in dui.views) {
@@ -519,6 +520,9 @@ dui = $.extend(true, dui, {
 
                     response(data);
                 },
+                create: function (event, ui) {
+                    $($(elem).parent()).find("ul").css({position: "relative"})
+                },
                 select: function (event, ui) {
                     this._save();
                 },
@@ -530,13 +534,13 @@ dui = $.extend(true, dui, {
             }).keyup(function () {
                 this._save();
             }).val(widget.data[wid_attr])
-                .css({'max-width':"281px"})
+                .css({'max-width': "281px"})
 
         }
     },
     editEffects: function (widget, wid_attr) {
         // Effect selector
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0]+" effect") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0] + " effect") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
 
         // autocomplete for filter key
         var elem = document.getElementById('inspect_' + wid_attr);
@@ -557,6 +561,7 @@ dui = $.extend(true, dui, {
 
             $(elem).autocomplete({
                 minLength: 0,
+                appendTo: $(elem).parent(),
                 source: function (request, response) {
                     var effects = ['',
                         'show',
@@ -580,6 +585,10 @@ dui = $.extend(true, dui, {
                     });
 
                     response(data);
+                },
+
+                create: function (event, ui) {
+                    $($(elem).parent()).find("ul").css({position: "relative"})
                 },
                 select: function (event, ui) {
                     this._save();
@@ -596,7 +605,7 @@ dui = $.extend(true, dui, {
     },
     editEffects_opt: function (widget, wid_attr) {
         // Effect selector
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0]+"options") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0] + "options") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
 
         // autocomplete for filter key
         var elem = document.getElementById('inspect_' + wid_attr);
@@ -617,6 +626,7 @@ dui = $.extend(true, dui, {
 
             $(elem).autocomplete({
                 minLength: 0,
+                appendTo: $(elem).parent(),
                 source: function (request, response) {
                     var effects = ['',
                         'show',
@@ -640,6 +650,9 @@ dui = $.extend(true, dui, {
                     });
 
                     response(data);
+                },
+                create: function (event, ui) {
+                    $($(elem).parent()).find("ul").css({position: "relative"})
                 },
                 select: function (event, ui) {
                     this._save();
@@ -1058,6 +1071,7 @@ dui = $.extend(true, dui, {
 
             $(elem).autocomplete({
                 minLength: 0,
+
                 source: function (request, response) {
                     var data = $.grep(dui.views[dui.activeView].filterList, function (value) {
                         return value.substring(0, request.term.length).toLowerCase() == request.term.toLowerCase();
@@ -1065,6 +1079,7 @@ dui = $.extend(true, dui, {
 
                     response(data);
                 },
+
                 select: function (event, ui) {
                     this._save();
                 },
@@ -1228,21 +1243,49 @@ dui = $.extend(true, dui, {
             .dialog({
                 modal: false,
                 autoOpen: false,
-                width: 480,
-                minWidth: 481,
+                width: 450,
                 height: $(window).height() - 100,
                 position: { my: "right top", at: "right top", of: window },
                 dialogClass: "dui-editor-dialog",
                 close: function () {
                     dui.saveRemote();
                     location.href = "./#" + dui.activeView;
+                },
+                open: function () {
+                    $("#dui_editor").perfectScrollbar({
+                        includePadding: true,
+                        wheelSpeed: 60,
+                    });
+                    $("#tabs").resize(function(){
+                        $("#dui_editor").perfectScrollbar("update");
+                    });
+                    $("#dui_editor").resize(function(){
+                        $("#dui_editor").perfectScrollbar("update");
+                    });
+                    dui.editPosition()
                 }
             });
+
         $("#dui_editor").dialogExtend({
             "minimizable": true,
             "icons": { "maximize": "ui-icon-arrow-4-diag" },
             "minimize": function (evt) {
-                $("#dui_editor").dialog("option", "position", { my: "right top", at: "right top", of: window });
+                var mode = $("#dui_editor_mode").xs_combo();
+                $("#dui_editor_mode").hide()
+
+                if (mode == "Right" || mode == "Free") {
+                    $("#dui_editor").dialog("option", "position", { my: "right top", at: "right top", of: window });
+                }
+                if (mode == "Left") {
+                    $("#dui_editor").dialog("option", "position", { my: "left top", at: "left top", of: window });
+                }
+            },
+            restore: function () {
+                $("#dui_editor_mode").show();
+                $(".dui-editor-dialog").css({
+                    width: "450px",
+                    height: "610px",
+                })
             }
         });
         /*$(".ui-dialog-titlebar-buttonpane").append("<button id='dialog_dock'></button>");
@@ -1269,11 +1312,16 @@ dui = $.extend(true, dui, {
 //                noneSelectedText: false,
                 selectedList: 1,
                 minWidth: $(this).attr("data-multiselect-width"),
-                height: $(this).attr("data-multiselect-height"),
+                height: "auto",
                 checkAllText: dui.translate("Check all"),
                 uncheckAllText: dui.translate("Uncheck all"),
                 noneSelectedText: dui.translate("Select options"),
-                classes: $(this).attr("id")
+                classes: $(this).attr("id"),
+                position: {
+                    my: 'left top',
+                    at: 'left bottom'
+                },
+                appendTo: $("#tabs")
 
             });
         });
@@ -1284,11 +1332,16 @@ dui = $.extend(true, dui, {
 //                noneSelectedText: false,
                 selectedList: 1,
                 minWidth: 250,
-                height: 410,
+                height: "auto",
                 checkAllText: dui.translate("Check all"),
                 uncheckAllText: dui.translate("Uncheck all"),
                 noneSelectedText: dui.translate("Select options"),
-                classes: $(this).attr("id")
+                classes: $(this).attr("id"),
+                position: {
+                    my: 'left top',
+                    at: 'left bottom'
+                },
+                appendTo: $("#tabs")
 
             });
         });
@@ -1299,11 +1352,16 @@ dui = $.extend(true, dui, {
 //                noneSelectedText: false,
                 selectedList: 1,
                 minWidth: 420,
-                height: 340,
+                height: "auto",
                 checkAllText: dui.translate("Check all"),
                 uncheckAllText: dui.translate("Uncheck all"),
                 noneSelectedText: dui.translate("Select options"),
-                classes: $(this).attr("id")
+                classes: $(this).attr("id"),
+                position: {
+                    my: 'left top',
+                    at: 'left bottom'
+                },
+                appendTo: $("#tabs")
 
             });
         });
@@ -1603,7 +1661,202 @@ dui = $.extend(true, dui, {
             dui.fillWizard();
         }
     },
+    editPosition: function () {
+
+        var save_posi = storage.get("Dashui_Editor_Position");
+
+        $(".ui-dialog-titlebar")
+            .append('<div id="dui_editor_mode"></div>')
+            .css({"z-index": 100});
+
+        $("#dui_editor_mode").xs_combo({
+//          addcssButton: "xs_button_editor_mode",
+//          addcssMenu: "xs_menu_editor_mode",
+//          addcssFocus: "xs_focus_editor_mode",
+            cssText: "xs_text_editor_mode",
+            time: 750,
+            val: dui.translate(save_posi[1]),
+            data: [
+                dui.translate("Links"),
+                dui.translate("Rechts"),
+                dui.translate("Links auto"),
+                dui.translate("Rechts auto"),
+                dui.translate("Free")
+            ]
+        });
+        $("#dui_editor_mode").change(function () {
+            var val = $("#dui_editor_mode").xs_combo();
+
+            if (val == dui.translate("Links")) {
+                left();
+                storage.set("Dashui_Editor_Position", ["left", val]);
+            }
+            if (val == dui.translate("Rechts")) {
+                right();
+                storage.set("Dashui_Editor_Position", ["right", val]);
+            }
+            if (val == dui.translate("Links auto")) {
+                left_ah();
+                storage.set("Dashui_Editor_Position", ["left_ah", val]);
+            }
+            if (val == dui.translate("Rechts auto")) {
+                right_ah();
+                storage.set("Dashui_Editor_Position", ["right_ah", val]);
+            }
+            if (val == dui.translate("Free")) {
+                free();
+                storage.set("Dashui_Editor_Position", ["free", val]);
+            }
+        });
+
+
+        var _save_posi = save_posi[0] + "()";
+        eval(_save_posi);
+
+        function left() {
+            if ($(".dui-editor-dialog").parent().attr("id") == "dui-editor-dialog-wrap") {
+                $(".dui-editor-dialog").unwrap();
+            }
+            $("#dui_editor")
+                .dialog("option", "resizable", false)
+                .dialog("option", "draggable", false);
+
+            $(".dui-editor-dialog").css({
+                height: "calc(100% - 9px)",
+                width: "450px",
+                left: 0,
+                position: "absolute",
+                right: "auto",
+                top: 0
+            })
+        }
+
+        function right() {
+            if ($(".dui-editor-dialog").parent().attr("id") == "dui-editor-dialog-wrap") {
+                $(".dui-editor-dialog").unwrap();
+            }
+            $("#dui_editor")
+                .dialog("option", "resizable", false)
+                .dialog("option", "draggable", false);
+            $(".dui-editor-dialog").css({
+                height: "calc(100% - 9px)",
+                width: "450px",
+                position: "absolute",
+                right: 0,
+                left: "auto",
+                top: 0,
+            })
+        }
+
+        function left_ah() {
+            var delay;
+            if ($(".dui-editor-dialog").parent().attr("id") == "dui-editor-dialog-wrap") {
+                $(".dui-editor-dialog").unwrap();
+            }
+            $("#dui_editor")
+                .dialog("option", "resizable", false)
+                .dialog("option", "draggable", false);
+
+            $(".dui-editor-dialog")
+                .wrapAll('<div id="dui-editor-dialog-wrap"></div>')
+                .css({
+                    height: "calc(100% - 9px)",
+                    width: "450px",
+                    left: 0,
+                    position: "relative",
+                    right: "auto",
+                    top: 0
+                })
+                .hide("slide", {direction: "left"});
+
+            $("#dui-editor-dialog-wrap")
+                .css({
+                    height: "calc(100% - 9px)",
+                    width: "auto",
+                    left: 0,
+                    position: "absolute",
+                    right: "auto",
+                    top: 0,
+                    minWidth: "20px"
+                })
+                .mouseenter(function () {
+                    clearTimeout(delay);
+                    $(".dui-editor-dialog").show("slide", {direction: "left"})
+                })
+                .mouseleave(function () {
+                    delay = setTimeout(function () {
+                        $(".dui-editor-dialog").hide("slide", {direction: "left"})
+                    }, 750);
+                })
+
+        }
+
+        function right_ah() {
+            var delay;
+            if ($(".dui-editor-dialog").parent().attr("id") == "dui-editor-dialog-wrap") {
+                $(".dui-editor-dialog").unwrap();
+            }
+            $("#dui_editor")
+                .dialog("option", "resizable", false)
+                .dialog("option", "draggable", false);
+
+            $(".dui-editor-dialog")
+                .wrapAll('<div id="dui-editor-dialog-wrap"></div>')
+                .css({
+                    height: "calc(100% - 9px)",
+                    width: "450px",
+                    left: "auto",
+                    position: "relative",
+                    right: 0,
+                    top: 0
+
+                })
+                .hide("slide", {direction: "right"});
+
+            $("#dui-editor-dialog-wrap")
+                .css({
+                    height: "calc(100% - 9px)",
+                    width: "auto",
+                    left: "auto",
+                    position: "absolute",
+                    right: 0,
+                    top: 0,
+                    minWidth: "20px"
+                })
+                .mouseenter(function () {
+                    clearTimeout(delay);
+                    $(".dui-editor-dialog").show("slide", {direction: "right"})
+                })
+                .mouseleave(function () {
+                    delay = setTimeout(function () {
+                        $(".dui-editor-dialog").hide("slide", {direction: "right"})
+                    }, 750);
+                })
+        }
+
+        function free() {
+
+            if ($(".dui-editor-dialog").parent().attr("id") == "dui-editor-dialog-wrap") {
+                $(".dui-editor-dialog").unwrap();
+            }
+            $("#dui_editor")
+                .dialog("option", "resizable", true)
+                .dialog("option", "draggable", true);
+
+            $(".dui-editor-dialog").css({
+                position: "absolute",
+                right: 0,
+                left: "auto",
+                top: 0,
+                width: "450px",
+                height: "610px",
+            })
+
+        }
+
+    },
     refreshWidgetSelect: function () {
+
         $("#select_tpl").html("");
         var current_set = $("#select_set option:selected").val();
         $(".dashui-tpl[data-dashui-set='" + current_set + "']").each(function () {
@@ -1713,8 +1966,8 @@ dui = $.extend(true, dui, {
             animate(_css1, 1500, 'swing', function () {
                 $(this).remove();
             }).click(function () {
-            $(this).stop().remove();
-        });
+                $(this).stop().remove();
+            });
 
         text = text.replace('action1', 'action2');
         $('body').append(text);

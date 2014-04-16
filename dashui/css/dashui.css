@@ -206,7 +206,6 @@ a.ui-dialog-titlebar-restore {
 
 .dashui-edit-td-caption {
     width: 90px;
-    max-width: 90px;
     min-width: 90px;
 }
 
@@ -232,10 +231,7 @@ a.ui-dialog-titlebar-restore {
 }
 
 .dashui-edit-tab {
-
-    height: 80%;
-    height: calc(100% - 50px);
-    overflow-y: scroll;
+    height: calc(100% - 70px);
     padding-left: 5px !important;
     padding-top: 0px !important;
 
@@ -243,14 +239,18 @@ a.ui-dialog-titlebar-restore {
 
 div#tabs {
 
-    height: 100%;
-    overflow: hidden;
-    min-width: 360px;
+    height: auto;
+    min-height: calc(100% - 20px) !important;
+    position: absolute;
+    width: auto;
 }
 
 div#dui_editor {
     overflow-y: hidden;
-    oberflow-x: scroll;
+    min-height: calc(100% - 63px) !important;
+    height: calc(100% - 63px) !important;
+    width: calc(100% - 0px) !important;
+    overflow: hidden;
 }
 
 .dashui-steal-css, .dashui-clear-css {
@@ -400,54 +400,13 @@ div#dui_editor {
     margin-top: 5px;
 }
 
-#dup_view {
-
-}
-
-.select_view {
-    width: 262px !important;
-    min-height: 29px;
-
-}
-
-.inspect_view_theme {
-    width: 297px !important;
-    margin-right: -5px;
-
-}
-
-.select_set {
-    width: 400px !important;
-    min-height: 29px !important;
-}
-
-.select_tpl {
-    width: 400px !important;
-    min-height: 29px !important;
-    margin-top: 5px;
-}
-
 #add_widget {
     margin-top: 5px;
 
 }
 
-.ui-multiselect-checkboxes {
-    background: inherit;
-}
-
-.select_active_widget {
-    min-height: 29px;
-    width: 400px !important;
-
-}
-
 #del_widget {
     width: 142px;
-
-}
-
-#widget_doc {
 
 }
 
@@ -468,8 +427,105 @@ div#dui_editor {
     max-width: 433px;
 
 }
-.dashui-edit-td-wid_attr{
+
+.dashui-edit-td-wid_attr {
     width: 90px;
     min-width: 90px;
+
+}
+
+#dui_editor_mode {
+    height: 27px;
+    width: 100px !important;
+    float: right;
+    left: -50px;
+    top: 1px;
+    position: relative;
+
+}
+
+#ui-id-1 {
+    width: 215px;
+
+}
+
+.xs_text_editor_mode {
+    color: inherit;
+    padding: 5px;
+    margin: 0;
+    border: 1px solid transparent;
+    font-size: 13px !important;
+    width: calc(100% - 10px) !important;
+}
+
+.ui-multiselect-checkboxes {
+    background: inherit;
+    overflow-y: visible !important;
+    position: relative;
+}
+
+.ui-multiselect.select_active_widget {
+    min-height: 29px;
+    width: 400px !important;
+}
+
+.ui-multiselect-menu.select_active_widget {
+    min-height: 29px;
+    width: 393px !important;
+    font-size: 15px !important;
+    font-weight: bold;
+}
+
+.ui-multiselect.select_view {
+    width: 262px !important;
+    min-height: 29px;
+}
+
+.ui-multiselect-menu.select_view {
+    width: 255px !important;
+    overflow: hidden;
+    font-size: 15px !important;
+    font-weight: bold;
+
+}
+
+.ui-multiselect.inspect_view_theme {
+    width: 311px !important;
+    margin-right: -5px;
+}
+
+.ui-multiselect-menu.inspect_view_theme {
+    width: 302px !important;
+    font-size: 15px !important;
+    font-weight: bold;
+}
+
+.ui-multiselect.select_set {
+    width: 400px !important;
+    min-height: 29px !important;
+}
+
+.ui-multiselect-menu.select_set {
+    width: 393px !important;
+    min-height: 29px !important;
+    font-size: 15px !important;
+    font-weight: bold;
+}
+
+.ui-multiselect.select_tpl {
+    width: 400px !important;
+    min-height: 29px !important;
+    margin-top: 5px;
+}
+
+.ui-multiselect-menu.select_tpl {
+    width: 393px !important;
+    min-height: 29px !important;
+    margin-top: 5px;
+    font-size: 15px !important;
+    font-weight: bold;
+}
+
+#dui_editor  .ps-scrollbar-y-rail{
 
 }

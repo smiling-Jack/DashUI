@@ -113,7 +113,7 @@
     });
 </script>
 
-<script type="text/ejs" id="tplswipe" class="dashui-tpl" data-dashui-set="swipe" data-dashui-name="swipe Navigation" data-dashui-attrs="Left-nav_view;Right-nav_view;duration">
+<script type="text/ejs" id="tplswipe" class="dashui-tpl" data-dashui-set="swipe" data-dashui-name="swipe Navigation" data-dashui-attrs="Left_nav_view;Left_effect;Left_eff_opt;Right_nav_view;duration">
 
   <div class = "dashui-widget <%== this.data.attr('class') %>" style="width: 90px; height: 60px;" id="<%= this.data.attr('wid') %>" <%= (el) -> dui.binds.swipe.swipe_nav(el,data) %>>
     <div id="<%= this.data.attr('wid') %>_swipe"  class="dashui-widget-body"
