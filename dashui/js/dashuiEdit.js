@@ -520,11 +520,12 @@ dui = $.extend(true, dui, {
 
                     response(data);
                 },
-                create: function (event, ui) {
-                    $($(elem).parent()).find("ul").css({position: "relative"})
-                },
+//                create: function (event, ui) {
+//                    $($(elem).parent()).find("ul").css({position: "relative"})
+//                },
                 select: function (event, ui) {
                     this._save();
+
                 },
                 change: function (event, ui) {
                     this._save();
@@ -587,14 +588,17 @@ dui = $.extend(true, dui, {
                     response(data);
                 },
 
-                create: function (event, ui) {
-                    $($(elem).parent()).find("ul").css({position: "relative"})
-                },
+//                create: function (event, ui) {
+//                    $($(elem).parent()).find("ul").css({position: "relative"})
+//                },
                 select: function (event, ui) {
                     this._save();
+
+                    $(elem).trigger('change', ui.item.value)
                 },
                 change: function (event, ui) {
                     this._save();
+                    $(elem).trigger('change', ui.item.value);
                 }
             }).focus(function () {
                 $(this).autocomplete("search", "");
@@ -605,7 +609,7 @@ dui = $.extend(true, dui, {
     },
     editEffects_opt: function (widget, wid_attr) {
         // Effect selector
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0] + "options") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0] + " opt.") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
 
         // autocomplete for filter key
         var elem = document.getElementById('inspect_' + wid_attr);
@@ -627,33 +631,10 @@ dui = $.extend(true, dui, {
             $(elem).autocomplete({
                 minLength: 0,
                 appendTo: $(elem).parent(),
-                source: function (request, response) {
-                    var effects = ['',
-                        'show',
-                        'blind',
-                        'bounce',
-                        'clip',
-                        'drop',
-                        'explode',
-                        'fade',
-                        'fold',
-                        'highlight',
-                        'puff',
-                        'pulsate',
-                        'scale',
-                        'shake',
-                        'size',
-                        'slide'];
-
-                    var data = $.grep(effects, function (value) {
-                        return value.substring(0, request.term.length).toLowerCase() == request.term.toLowerCase();
-                    });
-
-                    response(data);
-                },
-                create: function (event, ui) {
-                    $($(elem).parent()).find("ul").css({position: "relative"})
-                },
+                source: [''],
+//                create: function (event, ui) {
+//                  $($(elem).parent()).find("ul").css({position: "relative"})
+//                },
                 select: function (event, ui) {
                     this._save();
                 },
@@ -664,10 +645,49 @@ dui = $.extend(true, dui, {
                 $(this).autocomplete("search", "");
             }).keyup(function () {
                 this._save();
-            }).val(widget.data[wid_attr]);
+            }).val(dui.translate(widget.data[wid_attr]));
+
+
+
+
+            function choice_opt(_data) {
+                if (_data == "slide") {
+                    $('#option_' + wid_attr).show();
+                    $(elem).autocomplete('option', 'source', [{label:'links',value:'left'},{label:'rechts',value:'right'},{label:'hoch',value:'up'},{label:'runter',value:'down'}]);
+                } else {
+                    $(elem).autocomplete('option', 'source', ['']);
+                    widget.data[wid_attr] = "";
+                    $('#option_' + wid_attr).hide();
+
+                }
+            }
+            choice_opt($('#inspect_' + wid_attr.split('_eff_opt')[0] + ('_effect')).val());
+
+            if ($('#inspect_' + wid_attr.split('_eff_opt')[0] + ('_effect'))) {
+
+                $('#inspect_' + wid_attr.split('_eff_opt')[0] + ('_effect')).change(function (event, data) {
+
+                    choice_opt(data)
+
+                });
+            }
         }
     },
-    editImage: function (widget, wid_attr) {
+    hr: function (widget, wid_attr) {
+        // Effect selector
+        $("#widget_attrs").append('<tr class="dashui-add-option"><td colspan="2" class="dashui-edit-td-wid_attr"><hr></td></tr>');
+    },
+    br: function (widget, wid_attr) {
+        // Effect selector
+        $("#widget_attrs").append('<tr class="dashui-add-option"><td colspan="2" class="dashui-edit-td-wid_attr">&nbsp</td></tr>');
+    },
+
+
+
+
+
+
+        editImage: function (widget, wid_attr) {
         // Image src
         $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr) + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="44"/><input type="button" id="inspect_' + wid_attr + '_btn" value="..."></td></tr>');
         document.getElementById("inspect_" + wid_attr + "_btn").jControl = wid_attr;
@@ -820,6 +840,8 @@ dui = $.extend(true, dui, {
                 //              fontName
                 //              slide,min,max,step - Default step is ((max - min) / 100)
                 //              select_value1,select_value2,...
+                //              hr
+                //              br
 
                 var isValueSet = false;
                 var wid_attrs = widget_attrs[attr].split('/');
@@ -938,8 +960,14 @@ dui = $.extend(true, dui, {
                     } else if (wid_attr_.indexOf("_effect") != -1 || type == "effect") {
                         dui.editEffects(widget, wid_attr_);
                         isCustomEdit = true;
-                    } else if (wid_attr_.indexOf("_eff_opt") != -1 || type == "effect") {
+                    } else if (wid_attr_.indexOf("_eff_opt") != -1 || type == "effect_opt") {
                         dui.editEffects_opt(widget, wid_attr_);
+                        isCustomEdit = true;
+                    } else if (wid_attr_.indexOf( '_hr')!= -1) {
+                        dui.hr(widget, wid_attr_);
+                        isCustomEdit = true;
+                    } else if (wid_attr_.indexOf( '_br')!= -1) {
+                        dui.br(widget, wid_attr_);
                         isCustomEdit = true;
                     } else if (wid_attr_.slice(0, 4) !== "html") {
                         if (type !== null) {
@@ -1254,12 +1282,12 @@ dui = $.extend(true, dui, {
                 open: function () {
                     $("#dui_editor").perfectScrollbar({
                         includePadding: true,
-                        wheelSpeed: 60,
+                        wheelSpeed: 30
                     });
-                    $("#tabs").resize(function(){
+                    $("#tabs").resize(function () {
                         $("#dui_editor").perfectScrollbar("update");
                     });
-                    $("#dui_editor").resize(function(){
+                    $("#dui_editor").resize(function () {
                         $("#dui_editor").perfectScrollbar("update");
                     });
                     dui.editPosition()
