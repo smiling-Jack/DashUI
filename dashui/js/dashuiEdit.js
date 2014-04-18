@@ -541,7 +541,7 @@ dui = $.extend(true, dui, {
     },
     editEffects: function (widget, wid_attr) {
         // Effect selector
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0] + " effect") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td nowrap class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0] + " effect") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
 
         // autocomplete for filter key
         var elem = document.getElementById('inspect_' + wid_attr);
@@ -609,7 +609,7 @@ dui = $.extend(true, dui, {
     },
     editEffects_opt: function (widget, wid_attr) {
         // Effect selector
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0] + " opt.") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
+        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td nowrap class="dashui-edit-td-wid_attr">' + this.translate(wid_attr.split("_")[0] + " opt.") + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30"/></td></tr>');
 
         // autocomplete for filter key
         var elem = document.getElementById('inspect_' + wid_attr);
