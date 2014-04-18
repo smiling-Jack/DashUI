@@ -22,13 +22,15 @@
 
 // duiEdit - the DashUI Editor
 
+"use strict";
+
 dui = $.extend(true, dui, {
-    editVersion: '0.9beta71',
-    toolbox: $("#dui_editor"),
-    selectView: $("#select_view"),
-    activeWidget: "",
-    isStealCss: false,
-    gridWidth: undefined,
+    editVersion:        '0.9beta76',
+    toolbox:            $("#dui_editor"),
+    selectView:         $("#select_view"),
+    activeWidget:       "",
+    isStealCss:         false,
+    gridWidth:          undefined,
 
     renameView: function () {
         var val = $("#new_name").val();
@@ -95,16 +97,18 @@ dui = $.extend(true, dui, {
         return key;
     },
     getViewOfWidget: function (id) {
-        // find view of this widget
-        var view = null;
-        for (var v in dui.views) {
-            if (dui.views[v] && dui.views[v].widgets && dui.views[v].widgets[id]) {
-                view = v;
-                break;
-            }
-        }
-
-        return view;
+		// find view of this widget
+		var view = null;
+		for (var v in dui.views) {
+			if (dui.views[v] && dui.views[v].widgets && dui.views[v].widgets[id]) {
+				view = v;
+				break;
+			}
+		}
+		
+		return view;
+	},
+	getViewsOfWidget: function (id) {
     },
     getViewsOfWidget: function (id) {
         if (id.indexOf('_') == -1) {
@@ -309,84 +313,87 @@ dui = $.extend(true, dui, {
             alert("Widget copied to view " + targetView + ".");
         }
     },
-    renameWidget: function (oldId, newId) {
-        // find view of this widget
-        var view = dui.getViewOfWidget(oldId);
-
-        // create new widget with the same properties
-        if (view) {
-            dui.addWidget(dui.views[view].widgets[oldId].tpl, dui.views[view].widgets[oldId].data, dui.views[view].widgets[oldId].style, newId, view);
-            $("#select_active_widget").append("<option value='" + newId + "'>" + newId + " (" + $("#" + dui.views[view].widgets[newId].tpl).attr("data-dashui-name") + ")</option>").multiselect("refresh");
-            dui.delWidgetHelper(oldId, false);
-        }
-        dui.inspectWidget(newId);
-        dui.saveRemote();
-    },
-    // find this wid in all views,
-    // delete where it is no more exist,
-    // create where it should exist and
-    // sync data
-    syncWidget: function (id, views) {
-        // find view of this widget
-        var view = dui.getViewOfWidget(id);
-
-        if (views === undefined) {
-            views = dui.getViewsOfWidget(id);
-        }
-
-        if (view) {
-            if (views == null) {
-                views = [];
+	renameWidget: function (oldId, newId) {
+		// find view of this widget
+		var view = dui.getViewOfWidget(oldId);
+		
+		// create new widget with the same properties
+		if (view) {
+			dui.addWidget(dui.views[view].widgets[oldId].tpl, dui.views[view].widgets[oldId].data, dui.views[view].widgets[oldId].style, newId, view);
+            $("#select_active_widget").append("<option value='"+newId+"'>"+newId+" ("+$("#"+dui.views[view].widgets[newId].tpl).attr("data-dashui-name")+")</option>");
+            if ($().multiselect) {
+                $("#select_active_widget").multiselect("refresh");
             }
-
-            var isFound = false;
-            for (var i = 0; i < views.length; i++) {
-                if (views[i] == view) {
-                    isFound = true;
-                    break;
-                }
-            }
-
-            if (!isFound) {
-                views[views.length] = view;
-            }
-            var wids = id.split('_', 2);
-            var wid = wids[0];
-
-            // First sync views
-            for (var v_ in dui.views) {
-                var isFound = false;
-                if (v_ == view) {
-                    continue;
-                }
-
-                for (var i = 0; i < views.length; i++) {
-                    if (views[i] == v_) {
-                        isFound = true;
-                        break;
-                    }
-                }
-
-                if (dui.views[v_].widgets[wid + '_' + v_] !== undefined) {
-                    dui.delWidgetHelper(wid + '_' + v_, false);
-                }
-
-                if (isFound) {
-                    // Create
-                    dui.addWidget(dui.views[view].widgets[id].tpl, dui.views[view].widgets[id].data, dui.views[view].widgets[id].style, wid + '_' + v_, v_);
-                }
-            }
-
-
-            if (views.length < 2 && (id.indexOf('_') != -1)) {
-                // rename this widget from "wid_view" to "wid"
-                var wids = id.split('_', 2);
-                dui.renameWidget(id, wids[0]);
-            } else if (views.length > 1 && (id.indexOf('_') == -1)) {
-                dui.renameWidget(id, id + '_' + view);
-            }
-        }
-    },
+			dui.delWidgetHelper(oldId, false);
+		}
+		dui.inspectWidget(newId);
+		dui.saveRemote();
+	},
+	// find this wid in all views, 
+	// delete where it is no more exist, 
+	// create where it should exist and
+	// sync data
+	syncWidget: function (id, views) {
+		// find view of this widget
+		var view = dui.getViewOfWidget(id);
+		
+		if (views === undefined) {
+			views = dui.getViewsOfWidget(id);
+		}
+		
+		if (view) {
+			if (views == null) {
+				views = [];
+			}
+		
+			var isFound = false;
+			for (var i = 0; i < views.length; i++) {
+				if (views[i] == view) {
+					isFound = true;
+					break;
+				}
+			}
+		
+			if (!isFound) {
+				views[views.length] = view;
+			}
+			var wids = id.split('_', 2);
+			var wid = wids[0];
+			
+			// First sync views
+			for (var v_ in dui.views) {
+				var isFound = false;
+				if (v_ == view) {
+					continue;
+				}
+				
+				for (var i = 0; i < views.length; i++) {
+					if (views[i] == v_) {
+						isFound = true;
+						break;
+					}
+				}
+				
+				if (dui.views[v_].widgets[wid+'_'+v_] !== undefined) {
+					dui.delWidgetHelper(wid+'_'+v_, false);
+				}
+				
+				if (isFound) {	
+					// Create 
+					dui.addWidget(dui.views[view].widgets[id].tpl, dui.views[view].widgets[id].data, dui.views[view].widgets[id].style, wid+'_'+v_, v_);
+				}
+			}
+			
+			
+			if (views.length < 2 && (id.indexOf('_') != -1)) {
+				// rename this widget from "wid_view" to "wid"
+				var wids = id.split('_', 2);
+				dui.renameWidget(id, wids[0]);
+			} else if (views.length > 1 && (id.indexOf('_') == -1)) {
+				dui.renameWidget(id, id+'_'+view);
+			}
+		}
+	},
     editObjectID: function (widget, wid_attr, widget_filter) {
         // Edit for Homematic ID
         $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr) + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="5"><input type="button" id="inspect_' + wid_attr + '_btn" value="..."  style="width:30px"><div id="inspect_' + wid_attr + '_desc"></div></td></tr>');
@@ -462,9 +469,9 @@ dui = $.extend(true, dui, {
     },
     editColor: function (widget, wid_attr) {
         // Color selector
-        $("#widget_attrs").append('<tr id="option_' + wid_attr + '" class="dashui-add-option"><td class="dashui-edit-td-wid_attr">' + this.translate(wid_attr) + ':</td><td><input type="text" id="inspect_' + wid_attr + '" size="30" /><input id="inspect_' + wid_attr + 'Btn"  style="width:26px" type="button" value="..."></td></tr>');
-        if (colorSelect) {
-            var btn = document.getElementById("inspect_" + wid_attr + "Btn");
+        $("#widget_attrs").append('<tr id="option_'+wid_attr+'" class="dashui-add-option"><td>'+this.translate(wid_attr)+':</td><td><input type="text" id="inspect_'+wid_attr+'" size="44" style="width:90%" />'+((typeof colorSelect != 'undefined' && $().farbtastic) ? '<input id="inspect_'+wid_attr+'Btn"  style="width:8%" type="button" value="...">' : '')+'</td></tr>');
+        if (typeof colorSelect != 'undefined' && $().farbtastic) {
+            var btn = document.getElementById("inspect_"+wid_attr+"Btn");
             if (btn) {
                 btn.ctrlAttr = wid_attr;
                 $(btn).bind("click", {msg: this}, function (event) {
@@ -764,8 +771,10 @@ dui = $.extend(true, dui, {
         if (dui.widgets[id]) {
             //console.log(dui.widgets[id].data);
         }
-        $("#select_active_widget option[value='" + id + "']").prop("selected", true);
-        $("#select_active_widget").multiselect("refresh");
+        $("#select_active_widget option[value='"+id+"']").prop("selected", true);
+        if ($().multiselect) {
+            $("#select_active_widget").multiselect("refresh");
+        }
 
         // Alle Widgets de-selektieren und Interaktionen entfernen
         $(".dashui-widget").each(function () {
@@ -786,7 +795,7 @@ dui = $.extend(true, dui, {
             }
         });
 
-        // Inspector leeren
+        // Clear Inspector
         $("#widget_attrs").html("");
         $(".dashui-inspect-css").each(function () {
             $(this).val("");
@@ -804,6 +813,7 @@ dui = $.extend(true, dui, {
 
         if (!widget) {
             console.log("inspectWidget Widget undefined");
+            return false;
         }
 
         // Inspector aufbauen
@@ -838,7 +848,7 @@ dui = $.extend(true, dui, {
                 //              effect
                 //              eff_opt
                 //              fontName
-                //              slide,min,max,step - Default step is ((max - min) / 100)
+                //              slider,min,max,step - Default step is ((max - min) / 100)
                 //              select_value1,select_value2,...
                 //              hr
                 //              br
@@ -937,39 +947,33 @@ dui = $.extend(true, dui, {
                             dui.reRenderWidget(dui.activeWidget);
                         }
                         });
-                    } else if (wid_attr_ === "color" || type == "color") {
-                        dui.editColor(widget, wid_attr_);
-                    } else if (type === "checkbox") {
-                        isValueSet = true;
-                        dui.editCheckbox(widget, wid_attr_);
-                    } else if (type === "fontName") {
-                        isValueSet = true;
-                        dui.editFontName(widget, wid_attr_);
-                    } else if (type === "slider") {
+                } else if (wid_attr_ === "color" || type == "color") {
+                    dui.editColor(widget, wid_attr_);
+                } else if (type === "checkbox") {
+                    isValueSet = true;
+                    dui.editCheckbox(widget, wid_attr_);
+                } else if (type === "fontName") {
+                    isValueSet = true;
+                    dui.editFontName(widget, wid_attr_);
+                } else if (type === "slider") {
                         isValueSet = true;
                         var values = wid_attrs[1].split(',');
-                        dui.editSlider(widget, wid_attr_, values[1], values[2], values[3]);
+                        dui.editSlider (widget, wid_attr_, values[1], values[2], values[3]);
                         isCustomEdit = true;
                     } else if (type === "select") {
                         isValueSet = true;
                         var values = wid_attrs[1].split(',');
-                        dui.editSelect(widget, wid_attr_, values);
-                    } else if (wid_attr_.indexOf("nav_view") != -1 || type == "views") {
-                        dui.editViewName(widget, wid_attr_);
+                        dui.editSelect (widget, wid_attr_, values);
+                    } else if (wid_attr_.indexOf ("nav_view") != -1|| type == "views") {
+                        dui.editViewName (widget, wid_attr_);
                         isCustomEdit = true;
-                    } else if (wid_attr_.indexOf("_effect") != -1 || type == "effect") {
-                        dui.editEffects(widget, wid_attr_);
+                    } else if (type == "hidden") {
                         isCustomEdit = true;
-                    } else if (wid_attr_.indexOf("_eff_opt") != -1 || type == "effect_opt") {
-                        dui.editEffects_opt(widget, wid_attr_);
+                    } else
+                    if (wid_attr_.indexOf ("_effect") != -1 || type == "effect") {
+                        dui.editEffects (widget, wid_attr_);
                         isCustomEdit = true;
-                    } else if (wid_attr_.indexOf( '_hr')!= -1) {
-                        dui.hr(widget, wid_attr_);
-                        isCustomEdit = true;
-                    } else if (wid_attr_.indexOf( '_br')!= -1) {
-                        dui.br(widget, wid_attr_);
-                        isCustomEdit = true;
-                    } else if (wid_attr_.slice(0, 4) !== "html") {
+                    } else if (wid_attr_.slice(0,4) !== "html") {
                         if (type !== null) {
                             // If description is JSON object
                             if (type.indexOf('{') != -1) {
@@ -1116,51 +1120,55 @@ dui = $.extend(true, dui, {
                 }
             }).focus(function () {
                 $(this).autocomplete("search", "");
-            }).keyup(function () {
-                this._save();
+            }).keyup (function () {
+                this._save();               
+            }); 
+        }
+		
+		$('#inspect_views').html("");
+		var views = dui.getViewsOfWidget (dui.activeWidget);
+		for (var v in dui.views) {
+			if (v != dui.activeView) {
+				var selected = "";
+				for (var i = 0; i < views.length; i++) {
+					if (views[i] == v) {
+						selected = "selected";
+						break;
+					}
+				}
+			
+				$("#inspect_views").append("<option value='"+v+"' "+ selected +">"+v+"</option>");
+			}
+		}
+
+        if ($().multiselect) {
+            $('#inspect_views').multiselect({
+                minWidth: 300,
+                height: 260,
+                noneSelectedText: dui.translate("Single view"),
+                selectedText: function(numChecked, numTotal, checkedItems){
+                    var text = "";
+                    for (var i = 0; i < checkedItems.length; i++) {
+                        text += ((text == "") ? "" : ",") + checkedItems[i].title;
+                    }
+                    return text;
+                },
+                multiple: true,
+                checkAllText:     dui.translate("Check all"),
+                uncheckAllText:   dui.translate("Uncheck all")
+                //noneSelectedText: dui.translate("Select options")
+            }).change (function () {
+                dui.syncWidget (dui.activeWidget, $(this).val());
+                dui.saveRemote ();
             });
         }
-
-        $('#inspect_views').html("");
-        var views = dui.getViewsOfWidget(dui.activeWidget);
-        for (var v in dui.views) {
-            if (v != dui.activeView) {
-                var selected = "";
-                for (var i = 0; i < views.length; i++) {
-                    if (views[i] == v) {
-                        selected = "selected";
-                        break;
-                    }
-                }
-
-                $("#inspect_views").append("<option value='" + v + "' " + selected + ">" + v + "</option>");
-            }
-        }
-
-        $('#inspect_views').multiselect({
-            minWidth: 300,
-            height: 260,
-            noneSelectedText: dui.translate("Single view"),
-            selectedText: function (numChecked, numTotal, checkedItems) {
-                var text = "";
-                for (var i = 0; i < checkedItems.length; i++) {
-                    text += ((text == "") ? "" : ",") + checkedItems[i].title;
-                }
-                return text;
-            },
-            multiple: true,
-            checkAllText: dui.translate("Check all"),
-            uncheckAllText: dui.translate("Uncheck all"),
-            noneSelectedText: dui.translate("Select options")
-        }).change(function () {
-            dui.syncWidget(dui.activeWidget, $(this).val());
-            dui.saveRemote();
-        });
-
+        
         // Widget selektieren
         $("#select_active_widget option").removeAttr("selected");
-        $("#select_active_widget option[value='" + id + "']").prop("selected", true);
-        $("#select_active_widget").multiselect("refresh");
+        $("#select_active_widget option[value='"+id+"']").prop("selected", true);
+        if ($().multiselect) {
+            $("#select_active_widget").multiselect("refresh");
+        }
 
         if ($("#snap_type option:selected").val() == 2) {
             dui.gridWidth = parseInt($("#grid_size").val());
@@ -1194,9 +1202,13 @@ dui = $.extend(true, dui, {
         var h = $this.height();
         $("#widget_helper").css({left: pos.left - 2, top: pos.top - 2, height: $this.outerHeight() + 2, width: $this.outerWidth() + 2}).show();
 
-        // Interaktionen
-        dui.draggable($this);
-        dui.resizable($this);
+        // User interaction
+        if (!dui.widgets[id].data._no_move) {
+            dui.draggable($this);
+        }
+        if (!dui.widgets[id].data._no_resize) {
+            dui.resizable($this);
+        }
 
         // Inspector aufrufen
         $("#inspect_wid").html(id);
@@ -1204,6 +1216,87 @@ dui = $.extend(true, dui, {
         var tabActive = $("#tabs").tabs("option", "active");
         if (tabActive !== 1 && tabActive !== 2) {
             $("#tabs").tabs("option", "active", 1);
+        }
+    },
+    // Init all edit fields for one view
+    changeViewEdit: function (view) {
+        // Load meta data if not yet loaded
+        var isMetaLoaded = false;
+        for (var v in localData.metaObjects) {
+            isMetaLoaded = true;
+            break;
+        }
+        if (!isMetaLoaded) {
+            // Read all data objects from server
+            dui.conn.getDataObjects(function (data) {
+                localData.metaObjects = data;
+            });
+            dui.conn.getDataIndex(function (data) {
+                localData.metaIndex = data;
+            });
+        }
+
+        // Init background selector
+        if (dui.styleSelect) {
+            dui.styleSelect.Show({ width: 180,
+                name:       "inspect_view_bkg_def",
+                filterName: 'background',
+                //filterFile: "backgrounds.css",
+                style:      dui.views[view].settings.style.background_class,
+                parent:     $('#inspect_view_bkg_parent'),
+                onchange:   function (newStyle, obj) {
+                    if (dui.views[dui.activeView].settings.style['background_class']) {
+                        $("#duiview_" + dui.activeView).removeClass(dui.views[dui.activeView].settings.style['background_class']);
+                    }
+                    dui.views[dui.activeView].settings.style['background_class'] = newStyle;
+                    $("#duiview_" + dui.activeView).addClass(dui.views[dui.activeView].settings.style['background_class']);
+                }
+            });
+        }
+
+        $("#inspect_view").html(view);
+
+        $("#screen_size_x").val(dui.views[dui.activeView].settings.sizex || "").trigger("change");
+        $("#screen_size_y").val(dui.views[dui.activeView].settings.sizey || "").trigger("change");
+
+        $("#select_active_widget").html("<option value='none'>none selected</option>");
+        for (var widget in dui.views[dui.activeView].widgets) {
+            var obj = $("#" + dui.views[dui.activeView].widgets[widget].tpl);
+            $("#select_active_widget").append("<option value='" + widget + "'>" + widget + " (" + obj.attr("data-dashui-set") + " " + obj.attr("data-dashui-name") + ")</option>");
+        }
+
+        if ($().multiselect) {
+            $("#select_active_widget").multiselect("refresh");
+        }
+
+        if ($("#select_view option:selected").val() != view) {
+            $("#select_view option").removeAttr("selected");
+            $("#select_view option[value='" + view + "']").prop("selected", "selected");
+            if ($().multiselect) {
+                $("#select_view").multiselect("refresh");
+            }
+        }
+        $("#select_view_copy option").removeAttr("selected");
+        $("#select_view_copy option[value='" + view + "']").prop("selected", "selected");
+        if ($().multiselect) {
+            $("#select_view_copy").multiselect("refresh");
+        }
+        $(".dashui-inspect-view-css").each(function () {
+            var $this = $(this);
+            var attr = $this.attr("id").slice(17);
+            $("#" + $this.attr("id")).val(dui.views[dui.activeView].settings.style[attr]);
+        });
+        $(".dashui-inspect-view").each(function () {
+            var $this = $(this);
+            var attr = $this.attr("id").slice(13);
+            $("#" + $this.attr("id")).val(dui.views[dui.activeView].settings[attr]);
+        });
+        if (!dui.views[dui.activeView].settings["theme"]) {
+            dui.views[dui.activeView].settings["theme"] = "dhive";
+        }
+        $("#inspect_view_theme option[value='" + dui.views[dui.activeView].settings.theme + "']").prop("selected", true);
+        if ($().multiselect) {
+            $("#inspect_view_theme").multiselect("refresh");
         }
     },
     draggable: function (obj) {
@@ -1333,6 +1426,7 @@ dui = $.extend(true, dui, {
         $("input.dashui-editor").each(function () {
             $(this).button();
         });
+        if ($().multiselect) {
         $("select.dashui-editor").each(function () {
             $(this).multiselect({
                 multiple: false,
@@ -1351,6 +1445,7 @@ dui = $.extend(true, dui, {
                 },
                 appendTo: $("#tabs")
 
+                });
             });
         });
         $("select.dashui-editor-large").each(function () {
@@ -1371,6 +1466,7 @@ dui = $.extend(true, dui, {
                 },
                 appendTo: $("#tabs")
 
+                });
             });
         });
         $("select.dashui-editor-xlarge").each(function () {
@@ -1391,8 +1487,9 @@ dui = $.extend(true, dui, {
                 },
                 appendTo: $("#tabs")
 
+                });
             });
-        });
+        }
 
 
         // Button Click Handler
@@ -1433,12 +1530,11 @@ dui = $.extend(true, dui, {
             }
             dui.addWidget(tpl, data);
 
-            $("#select_active_widget").append("<option value='" + dui.activeWidget + "'>" + dui.activeWidget + " (" + $("#" + dui.views[dui.activeView].widgets[dui.activeWidget].tpl).attr("data-dashui-name") + ")</option>").multiselect("refresh");
-
-            setTimeout(function () {
-                dui.inspectWidget(dui.activeWidget)
-            }, 50);
-            $(this).removeClass("ui-state-focus");
+            $("#select_active_widget").append("<option value='"+dui.activeWidget+"'>"+dui.activeWidget+" ("+$("#"+dui.views[dui.activeView].widgets[dui.activeWidget].tpl).attr("data-dashui-name")+")</option>");
+            if ($().multiselect) {
+                $("#select_active_widget").multiselect("refresh");
+            }
+            setTimeout(function () { dui.inspectWidget(dui.activeWidget) }, 50);
 
         });
         $("#add_view").button({icons: {primary: "ui-icon-plusthick"}}).click(function () {
@@ -1592,297 +1688,110 @@ dui = $.extend(true, dui, {
         });
 
         // Instances
-        dui.instance = storage.get(dui.storageKeyInstance);
-        if (!dui.instance) {
-            $("#instance").hide();
-        } else {
+        if (typeof storage !== 'undefined') {
+            dui.instance = storage.get(dui.storageKeyInstance);
+            if (!dui.instance) {
+                $("#instance").hide();
+            } else {
 
+            }
         }
-
     },
     editInitNext: function () {
-        // DashUI Editor Init
-        var sel;
+		// DashUI Editor Init
+		var sel;
 
-        var keys = Object.keys(dui.views),
-            i, k, len = keys.length;
+		var keys = Object.keys(dui.views),
+			i, k, len = keys.length;
 
-        keys.sort();
+		keys.sort();
 
-        for (i = 0; i < len; i++) {
-            k = keys[i];
+		for (i = 0; i < len; i++) {
+			k = keys[i];
 
-            if (k == dui.activeView) {
-                $("#inspect_view").html(dui.activeView);
-                sel = " selected";
-            } else {
-                sel = "";
-            }
-            $("#select_view").append("<option value='" + k + "'" + sel + ">" + k + "</option>")
-            $("#select_view_copy").append("<option value='" + k + "'" + sel + ">" + k + "</option>")
+			if (k == dui.activeView) {
+				$("#inspect_view").html(dui.activeView);
+				sel = " selected";
+			} else {
+				sel = "";
+			}
+			$("#select_view").append("<option value='" + k + "'" + sel + ">" + k + "</option>")
+			$("#select_view_copy").append("<option value='" + k + "'" + sel + ">" + k + "</option>")
+		}
+        if ($().multiselect) {
+            $("#select_view").multiselect("refresh");
+
+            $("#select_view_copy").multiselect({
+                minWidth: 200,
+                checkAllText:dui.translate("Check all"),
+                uncheckAllText:dui.translate("Uncheck all"),
+                noneSelectedText:dui.translate("Select options")
+            }).multiselect("refresh");
         }
-        $("#select_view").multiselect("refresh");
+		
+		$("#select_view").change(function () {
+			dui.changeView($(this).val());
+		});
 
-        $("#select_view_copy").multiselect({
-            minWidth: 200,
-            checkAllText: dui.translate("Check all"),
-            uncheckAllText: dui.translate("Uncheck all"),
-            noneSelectedText: dui.translate("Select options")
-        }).multiselect("refresh");
+		$("#select_set").change(dui.refreshWidgetSelect);
+		$("#select_set").html("");
 
-        $("#select_view").change(function () {
-            dui.changeView($(this).val());
-        });
-
-        $("#select_set").change(dui.refreshWidgetSelect);
-        $("#select_set").html("");
-
-        for (i = 0; i < dui.widgetSets.length; i++) {
-            if (dui.widgetSets[i].name !== undefined) {
-                $("#select_set").append("<option value='" + dui.widgetSets[i].name + "'>" + dui.widgetSets[i].name + "</option>");
-            } else {
-                $("#select_set").append("<option value='" + dui.widgetSets[i] + "'>" + dui.widgetSets[i] + "</option>");
-            }
+		for (i = 0; i < dui.widgetSets.length; i++) {
+			if (dui.widgetSets[i].name !== undefined) {
+				$("#select_set").append("<option value='" + dui.widgetSets[i].name + "'>" + dui.widgetSets[i].name + "</option>");
+			} else {
+				$("#select_set").append("<option value='" + dui.widgetSets[i] + "'>" + dui.widgetSets[i] + "</option>");
+			}
+		}
+        if ($().multiselect) {
+    		$("#select_set").multiselect("refresh");
         }
-        $("#select_set").multiselect("refresh");
-        dui.refreshWidgetSelect();
+		dui.refreshWidgetSelect();
 
 
-        //console.log("TOOLBOX OPEN");
-        $("#dui_editor").dialog("open");
+		//console.log("TOOLBOX OPEN");
+		$("#dui_editor").dialog("open");
+        $('.ui-dialog').css({'z-index':1000});
         if (dui.binds.jqueryui) {
-            dui.binds.jqueryui._disable();
+		dui.binds.jqueryui._disable();
         }
 
-        // Create background_class property if does not exist
-        if (dui.views[dui.activeView] != undefined) {
-            if (dui.views[dui.activeView].settings == undefined) {
-                dui.views[dui.activeView].settings = new Object();
-            }
-            if (dui.views[dui.activeView].settings.style == undefined) {
-                dui.views[dui.activeView].settings.style = new Object();
-            }
-            if (dui.views[dui.activeView].settings.style['background_class'] == undefined) {
-                dui.views[dui.activeView].settings.style['background_class'] = "";
-            }
-        }
+		// Create background_class property if does not exist
+		if (dui.views[dui.activeView] != undefined) {
+			if (dui.views[dui.activeView].settings == undefined) {
+				dui.views[dui.activeView].settings = new Object();
+			}
+			if (dui.views[dui.activeView].settings.style == undefined) {
+				dui.views[dui.activeView].settings.style = new Object();
+			}
+			if (dui.views[dui.activeView].settings.style['background_class'] == undefined) {
+				dui.views[dui.activeView].settings.style['background_class'] = "";
+			}
+		}
 
 
-        // Init background selector
-        if (dui.styleSelect) {
-            dui.styleSelect.Show({ width: 180,
-                name: "inspect_view_bkg_def",
-                filterFile: "backgrounds.css",
-                style: dui.views[dui.activeView].settings.style['background_class'],
-                parent: $('#inspect_view_bkg_parent'),
-                onchange: function (newStyle, obj) {
-                    if (dui.views[dui.activeView].settings.style['background_class']) {
-                        $("#duiview_" + dui.activeView).removeClass(dui.views[dui.activeView].settings.style['background_class']);
-                    }
-                    dui.views[dui.activeView].settings.style['background_class'] = newStyle;
-                    $("#duiview_" + dui.activeView).addClass(dui.views[dui.activeView].settings.style['background_class']);
-                }
-            });
-        }
-
-        if (dui.fillWizard) {
-            dui.fillWizard();
-        }
-    },
-    editPosition: function () {
-
-        var save_posi = storage.get("Dashui_Editor_Position");
-
-        $(".ui-dialog-titlebar")
-            .append('<div id="dui_editor_mode"></div>')
-            .css({"z-index": 100});
-
-        $("#dui_editor_mode").xs_combo({
-//          addcssButton: "xs_button_editor_mode",
-//          addcssMenu: "xs_menu_editor_mode",
-//          addcssFocus: "xs_focus_editor_mode",
-            cssText: "xs_text_editor_mode",
-            time: 750,
-            val: dui.translate(save_posi[1]),
-            data: [
-                dui.translate("Links"),
-                dui.translate("Rechts"),
-                dui.translate("Links auto"),
-                dui.translate("Rechts auto"),
-                dui.translate("Free")
-            ]
-        });
-        $("#dui_editor_mode").change(function () {
-            var val = $("#dui_editor_mode").xs_combo();
-
-            if (val == dui.translate("Links")) {
-                left();
-                storage.set("Dashui_Editor_Position", ["left", val]);
-            }
-            if (val == dui.translate("Rechts")) {
-                right();
-                storage.set("Dashui_Editor_Position", ["right", val]);
-            }
-            if (val == dui.translate("Links auto")) {
-                left_ah();
-                storage.set("Dashui_Editor_Position", ["left_ah", val]);
-            }
-            if (val == dui.translate("Rechts auto")) {
-                right_ah();
-                storage.set("Dashui_Editor_Position", ["right_ah", val]);
-            }
-            if (val == dui.translate("Free")) {
-                free();
-                storage.set("Dashui_Editor_Position", ["free", val]);
-            }
-        });
-
-
-        var _save_posi = save_posi[0] + "()";
-        eval(_save_posi);
-
-        function left() {
-            if ($(".dui-editor-dialog").parent().attr("id") == "dui-editor-dialog-wrap") {
-                $(".dui-editor-dialog").unwrap();
-            }
-            $("#dui_editor")
-                .dialog("option", "resizable", false)
-                .dialog("option", "draggable", false);
-
-            $(".dui-editor-dialog").css({
-                height: "calc(100% - 9px)",
-                width: "450px",
-                left: 0,
-                position: "absolute",
-                right: "auto",
-                top: 0
-            })
-        }
-
-        function right() {
-            if ($(".dui-editor-dialog").parent().attr("id") == "dui-editor-dialog-wrap") {
-                $(".dui-editor-dialog").unwrap();
-            }
-            $("#dui_editor")
-                .dialog("option", "resizable", false)
-                .dialog("option", "draggable", false);
-            $(".dui-editor-dialog").css({
-                height: "calc(100% - 9px)",
-                width: "450px",
-                position: "absolute",
-                right: 0,
-                left: "auto",
-                top: 0,
-            })
-        }
-
-        function left_ah() {
-            var delay;
-            if ($(".dui-editor-dialog").parent().attr("id") == "dui-editor-dialog-wrap") {
-                $(".dui-editor-dialog").unwrap();
-            }
-            $("#dui_editor")
-                .dialog("option", "resizable", false)
-                .dialog("option", "draggable", false);
-
-            $(".dui-editor-dialog")
-                .wrapAll('<div id="dui-editor-dialog-wrap"></div>')
-                .css({
-                    height: "calc(100% - 9px)",
-                    width: "450px",
-                    left: 0,
-                    position: "relative",
-                    right: "auto",
-                    top: 0
-                })
-                .hide("slide", {direction: "left"});
-
-            $("#dui-editor-dialog-wrap")
-                .css({
-                    height: "calc(100% - 9px)",
-                    width: "auto",
-                    left: 0,
-                    position: "absolute",
-                    right: "auto",
-                    top: 0,
-                    minWidth: "20px"
-                })
-                .mouseenter(function () {
-                    clearTimeout(delay);
-                    $(".dui-editor-dialog").show("slide", {direction: "left"})
-                })
-                .mouseleave(function () {
-                    delay = setTimeout(function () {
-                        $(".dui-editor-dialog").hide("slide", {direction: "left"})
-                    }, 750);
-                })
-
-        }
-
-        function right_ah() {
-            var delay;
-            if ($(".dui-editor-dialog").parent().attr("id") == "dui-editor-dialog-wrap") {
-                $(".dui-editor-dialog").unwrap();
-            }
-            $("#dui_editor")
-                .dialog("option", "resizable", false)
-                .dialog("option", "draggable", false);
-
-            $(".dui-editor-dialog")
-                .wrapAll('<div id="dui-editor-dialog-wrap"></div>')
-                .css({
-                    height: "calc(100% - 9px)",
-                    width: "450px",
-                    left: "auto",
-                    position: "relative",
-                    right: 0,
-                    top: 0
-
-                })
-                .hide("slide", {direction: "right"});
-
-            $("#dui-editor-dialog-wrap")
-                .css({
-                    height: "calc(100% - 9px)",
-                    width: "auto",
-                    left: "auto",
-                    position: "absolute",
-                    right: 0,
-                    top: 0,
-                    minWidth: "20px"
-                })
-                .mouseenter(function () {
-                    clearTimeout(delay);
-                    $(".dui-editor-dialog").show("slide", {direction: "right"})
-                })
-                .mouseleave(function () {
-                    delay = setTimeout(function () {
-                        $(".dui-editor-dialog").hide("slide", {direction: "right"})
-                    }, 750);
-                })
-        }
-
-        function free() {
-
-            if ($(".dui-editor-dialog").parent().attr("id") == "dui-editor-dialog-wrap") {
-                $(".dui-editor-dialog").unwrap();
-            }
-            $("#dui_editor")
-                .dialog("option", "resizable", true)
-                .dialog("option", "draggable", true);
-
-            $(".dui-editor-dialog").css({
-                position: "absolute",
-                right: 0,
-                left: "auto",
-                top: 0,
-                width: "450px",
-                height: "610px",
-            })
-
-        }
-
-    },
+		// Init background selector ( must be
+		/*if (dui.styleSelect) {
+			dui.styleSelect.Show({ width: 180,
+				name:       "inspect_view_bkg_def",
+                filterName: 'background',
+//				filterFile: "backgrounds.css",
+				style:      dui.views[dui.activeView].settings.style['background_class'],
+				parent:     $('#inspect_view_bkg_parent'),
+				onchange:   function (newStyle, obj) {
+					if (dui.views[dui.activeView].settings.style['background_class']) {
+						$("#duiview_" + dui.activeView).removeClass(dui.views[dui.activeView].settings.style['background_class']);
+					}
+					dui.views[dui.activeView].settings.style['background_class'] = newStyle;
+					$("#duiview_" + dui.activeView).addClass(dui.views[dui.activeView].settings.style['background_class']);
+				}
+			});
+		}*/
+	
+		if (dui.fillWizard) {
+			dui.fillWizard ();
+		}		
+ 	},
     refreshWidgetSelect: function () {
 
         $("#select_tpl").html("");
@@ -1890,7 +1799,9 @@ dui = $.extend(true, dui, {
         $(".dashui-tpl[data-dashui-set='" + current_set + "']").each(function () {
             $("#select_tpl").append("<option value='" + $(this).attr("id") + "'>" + $(this).attr("data-dashui-name") + "</option>")
         });
-        $("#select_tpl").multiselect("refresh");
+        if ($().multiselect) {
+            $("#select_tpl").multiselect("refresh");
+        }
     },
     // Find free place for new widget
     findFreePosition: function (view, id, field, widgetWidth, widgetHeight) {
