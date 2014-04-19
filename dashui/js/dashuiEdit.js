@@ -25,12 +25,12 @@
 "use strict";
 
 dui = $.extend(true, dui, {
-    editVersion: '0.9beta76',
-    toolbox: $("#dui_editor"),
-    selectView: $("#select_view"),
-    activeWidget: "",
-    isStealCss: false,
-    gridWidth: undefined,
+    editVersion:        '0.9beta78',
+    toolbox:            $("#dui_editor"),
+    selectView:         $("#select_view"),
+    activeWidget:       "",
+    isStealCss:         false,
+    gridWidth:          undefined,
     editor_posi: "free",
 
     renameView: function () {
@@ -863,7 +863,7 @@ dui = $.extend(true, dui, {
                 }
                 var type = (wid_attrs.length > 1) ? wid_attrs[1] : null;
                 if (type && type.indexOf(",") != -1) {
-                    if (type.substring(0, "slider".length) == "slider") {
+                    if (type.substring (0, "slider".length) == "slider") {
                         type = "slider";
                     } else {
                         type = "select";
@@ -890,9 +890,8 @@ dui = $.extend(true, dui, {
                         instancesStop++;
                     }
                 }
-
-                do
-                {
+                
+                do  {
                     var wid_attr_ = wid_attr + ((instancesStart !== null) ? instancesStart : "");
                     var isCustomEdit = false;
 
@@ -920,7 +919,7 @@ dui = $.extend(true, dui, {
                          }, 'WORKING');
                          });*/
                     } else if (wid_attr_.indexOf("src") == wid_attr_.length - 3 || type == "image") {
-                        dui.editImage(widget, wid_attr_);
+                        dui.editImage (widget, wid_attr_);
                     } else if (wid_attr_ === "hqoptions") {
                         // hqWidgets options
                         $('#inspect_comment_tr').hide();
@@ -960,9 +959,9 @@ dui = $.extend(true, dui, {
                     } else if (type === "select") {
                         isValueSet = true;
                         var values = wid_attrs[1].split(',');
-                        dui.editSelect(widget, wid_attr_, values);
-                    } else if (wid_attr_.indexOf("nav_view") != -1 || type == "views") {
-                        dui.editViewName(widget, wid_attr_);
+                        dui.editSelect (widget, wid_attr_, values);
+                    } else if (wid_attr_.indexOf("nav_view") != -1|| type == "views") {
+                        dui.editViewName (widget, wid_attr_);
                         isCustomEdit = true;
                     } else if (type == "hidden") {
                         isCustomEdit = true;
@@ -1075,8 +1074,7 @@ dui = $.extend(true, dui, {
                     if (instancesStart !== null) {
                         instancesStart++;
                     }
-                }
-                while (instancesStart != instancesStop);
+                } while (instancesStart != instancesStop);
             }
         }
 

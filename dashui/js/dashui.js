@@ -24,7 +24,7 @@
 
 var dui = {
 
-    version:                '0.9beta76',
+    version:                '0.9beta78',
     requiredServerVersion:  '1.0.28',
     storageKeyViews:        'dashuiViews',
     storageKeySettings:     'dashuiSettings',
@@ -374,7 +374,7 @@ var dui = {
         window.location.href = './?edit';
     },
     renderView: function (view, noThemeChange, hidden) {
-        console.log("renderView("+view+","+noThemeChange+","+hidden+")");
+        //console.log("renderView("+view+","+noThemeChange+","+hidden+")");
 
         if (!dui.views[view]) {
             return false;
@@ -624,7 +624,7 @@ var dui = {
 
     },
     changeView: function (view, hideOptions, showOptions, sync) {
-        console.log("changeView "+view);
+        //console.log("changeView "+view);
         var effect = (hideOptions !== undefined) && (hideOptions.effect !== undefined) && (hideOptions.effect != "");
         if (!effect) {
             effect = (showOptions !== undefined) && (showOptions.effect !== undefined) && (showOptions.effect != "")
@@ -1760,7 +1760,12 @@ var servConn = {
                     for (var dp in data) {
                         var obj = data[dp];
                         if (!localData.uiState['_' + dp]) {
-                            localData.uiState.attr('_' + dp, { Value: data[dp][0], Timestamp: data[dp][1], Certain: data[dp][2], LastChange: data[dp][3]});
+                            try {
+                                localData.uiState.attr('_' + dp, { Value: data[dp][0], Timestamp: data[dp][1], Certain: data[dp][2], LastChange: data[dp][3]});
+                            } catch (e) {
+                                console.log("Error: can't create uiState object for "+dp);
+                                console.log(e);
+                            }
                         } else {
                             var o = {};
                                 o['_' + dp + '.Value']      = obj[0];
