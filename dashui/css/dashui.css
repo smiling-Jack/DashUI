@@ -660,6 +660,6 @@ div#dui_editor {
     font-weight: bold;
 }
 
-#dui_editor  .ps-scrollbar-y-rail{
-
+#widget_attrs  tbody  td  .ui-autocomplete{
+    position: absolute!important;
 }
