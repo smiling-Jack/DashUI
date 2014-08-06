@@ -1,6 +1,7 @@
 var duiConfig = {
 
     widgetSets: [
+        "plumb",
         "basic",
         "bars",
         "bko",

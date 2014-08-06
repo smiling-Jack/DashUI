@@ -1058,12 +1058,12 @@ dui = $.extend(true, dui, {
         $('#inspect_class_tr').show();
         var widget_div = document.getElementById(dui.activeWidget);
         var editParent = $("#widget_attrs").css({"width": "100%"});
-       
+
         // Edit all attributes
         for (var attr in widget_attrs) {
             if (widget_attrs[attr] != "") {
                 // Format: attr_name(start-end)[default_value]/type
-                // attr_name can be extended with numbers (1-2) means it will be attr_name1 and attr_name2 created 
+                // attr_name can be extended with numbers (1-2) means it will be attr_name1 and attr_name2 created
                 // Type format: id - Object ID Dialog
                 //              checkbox
                 //              image
@@ -1118,7 +1118,7 @@ dui = $.extend(true, dui, {
                         instancesStop++;
                     }
                 }
-                
+
                 do {
                     var wid_attr_ = wid_attr + ((instancesStart !== null) ? instancesStart : "");
                     var isCustomEdit = false;
@@ -1168,7 +1168,7 @@ dui = $.extend(true, dui, {
                                 dui.reRenderWidgetEdit(dui.activeWidget);
                             }
                         });
-                    } else if (wid_attr_ === "color" || type == "color") {
+                    } else if (wid_attr_.indexOf("color") != -1 || type == "color") {
                         dui.editColor(widget, wid_attr_);
                     } else if (type === "checkbox") {
                         isValueSet = true;
@@ -1495,8 +1495,9 @@ dui = $.extend(true, dui, {
             $("#duiview_"+view).selectable({
                 filter: "div.dashui-widget",
                 tolerance: "fit",
-				cancel: "div.dashui-widget",
+				cancel: "div.dashui-widget, ._jsPlumb_connector",
                 start: function (e, ui) {
+console.log(e)
 
                 },
                 stop: function (e, ui) {
@@ -1700,6 +1701,7 @@ dui = $.extend(true, dui, {
                         mWidget._customHandlers.onMoveEnd(mWidget, mid);
                     }
                 }
+                $(mWidget).trigger("moved");
                 dui.save();
                 setTimeout(function () {
                     dui.dragging = false;
@@ -1730,6 +1732,8 @@ dui = $.extend(true, dui, {
                     if (mWidget._customHandlers && mWidget._customHandlers.onMove) {
                         mWidget._customHandlers.onMove(mWidget, dui.multiSelectedWidgets[i]);
                     }
+
+                    $mWidget.trigger("moved");
                 }
                 var mWidget = document.getElementById(dui.activeWidget);
 
@@ -1751,6 +1755,7 @@ dui = $.extend(true, dui, {
                     var pos = $("#allwidgets_helper").position();
                     $("#allwidgets_helper").css({left: pos.left + moveX, top: pos.top + moveY});
                 }
+                $(mWidget).trigger("moved");
             }
         };
         if ($("#snap_type option:selected").val() == 1) {
@@ -1782,10 +1787,11 @@ dui = $.extend(true, dui, {
                     dui.views[dui.activeView].widgets[widget].style.width = ui.size.width;
                     dui.views[dui.activeView].widgets[widget].style.height = ui.size.height;
                     dui.save();
-
+                    $(obj).trigger("resized")
                 },
                 resize: function (event,ui) {
                     $("#widget_helper").css({width: ui.element.outerWidth() + 2, height: ui.element.outerHeight() + 2});
+                    $(obj).trigger("resized")
                 }
             }, resizableOptions));
         }

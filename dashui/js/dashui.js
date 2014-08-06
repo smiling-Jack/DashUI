@@ -418,6 +418,9 @@ var dui = {
             if (dui.binds.jqueryui && dui.editMode) {
                 dui.binds.jqueryui._disable();
             }
+
+
+
         } else {
             //console.log("renderView("+view+") - view already rendered");
         }
@@ -436,6 +439,8 @@ var dui = {
             $("#duiview_" + cview).appendTo(this);
             $("#duiview_" + cview).show();
 
+
+
         });
 
         if (!hidden) {
@@ -449,8 +454,13 @@ var dui = {
                         dui.renderWidget(view, id);
                     }
                 }
+                console.log("trigger view rendert");
+                $("#duiview_" + view).trigger("rendert");
             }
         }
+
+
+
 
         // Store modified view
         if (isViewsConverted) {
@@ -469,8 +479,13 @@ var dui = {
         }
     },
     reRenderWidget: function (widget) {
-        $("#" + widget).remove();
-        dui.renderWidget(dui.activeView, widget);
+        if($("#" + widget).hasClass("no_rerender")){
+            $("#" + widget).trigger("rerender")
+        }else{
+            $("#" + widget).remove();
+            dui.renderWidget(dui.activeView, widget);
+        }
+
     },
     changeFilter: function (filter, showEffect, showDuration, hideEffect, hideDuration) {
 
@@ -480,6 +495,7 @@ var dui = {
             for (var widget in widgets) {
                 if (widgets[widget].data.filterkey && widgets[widget].data.filterkey != "") {
                     $("#" + widget).show(showEffect, null, parseInt(showDuration));
+                    $("#" + widget).trigger("filter_show");
                 }
             }
             // Show complex widgets
@@ -508,6 +524,7 @@ var dui = {
                     mWidget._customHandlers.onHide(mWidget, widget);
                 }
                 $("#" + widget).hide(hideEffect, null, parseInt(hideDuration));
+                $("#" + widget).trigger("filter_hide");
             }
         } else {
             dui.viewsActiveFilter[dui.activeView] = filter.split(",");
@@ -523,8 +540,10 @@ var dui = {
                             mWidget._customHandlers.onHide(mWidget, widget);
                         }
                         $("#" + widget).hide(hideEffect, null, parseInt(hideDuration));
+                        $("#" + widget).trigger("filter_hide");
                     } else {
                         $("#" + widget).show(showEffect, null, parseInt(showDuration));
+                        $("#" + widget).trigger("filter_show");
                     }
                 }
             }

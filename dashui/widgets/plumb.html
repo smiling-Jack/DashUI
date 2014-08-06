@@ -1,0 +1,66 @@
+<script type="text/javascript" src="widgets/plumb/js/jquery.jsPlumb-1.6.3.js"></script>
+
+<script type="text/javascript" src="widgets/plumb/js/plumb.js"></script>
+
+
+<script type="text/ejs" id="tplplumb_con" class="dashui-tpl" data-dashui-set="plumb" data-dashui-name="con. Manager"
+        data-dashui-attrs="Z-low[1];Z-high[999];width[6];standart[#456]/color; opt/hidden">
+    <div class = "dashui-widget <%== this.data.attr('class') %> plumb_wg no_rerender" style="display: none; width: 120px; height:130px; background-color: #333; color: #eee; border: 2px dashed red; opacity:0.8;" id="<%= this.data.attr('wid') %>" <%= (el) -> dui.binds.plumb.con_manager(el, data) %>>
+        <div id="<%= this.data.attr('wid') %>" class="dashui-widget-body">
+                <b>Con Manager</b><br/>
+                <button style="width:120px" id="clear" >clear</button>
+                <button style="width:120px" id="repaint" >Repaint All</button>
+                <button style="width:120px" id="front" >Im Vordergrund</button>
+                <button style="width:120px" id="back" >Im Hintergrund</button>
+        </div>
+        <div </div>
+    </div>
+
+</script>
+
+<script type="text/ejs" id="tplplumb_pump" class="dashui-tpl" data-dashui-set="plumb" data-dashui-name="Pumpe"
+        data-dashui-attrs="hm_id;standart['blue']/color;stroke;_no_resize[true]/hidden">
+    <div class = "dashui-widget <%== this.data.attr('class') %> plumb_wg no_rerender" style="resize:none width: 60px; height: 30px; background-color: #333; color: #eee; border: 2px dashed red; opacity:0.8;" id="<%= this.data.attr('wid') %>" <%= (el) -> dui.binds.plumb.pumpe(el,data) %>>
+        <div id="<%= this.data.attr('wid') %>" class="dashui-widget-body" style="text-align:center">
+                <b>Pumpe</b><br/>
+        </div>
+    </div>
+
+
+</script>
+
+<script type="text/ejs" id="tplplumb_zp" class="dashui-tpl" data-dashui-set="plumb" data-dashui-name="ZP"
+                 data-dashui-attrs="_no_resize[true]/hidden">
+    <div class = "dashui-widget <%== this.data.attr('class') %> plumb_wg no_rerender" style="width: 30px; height: 30px; background-color: #333; color: #eee; border: 2px dashed red; opacity:0.8;" id="<%= this.data.attr('wid') %>" <%= (el) -> dui.binds.plumb.zp(el) %>>
+        <div id="<%= this.data.attr('wid') %>" class="dashui-widget-body" style="text-align:center">
+                <b>ZP</b><br/>
+        </div>
+    </div>
+
+
+</script>
+
+<script type="text/ejs" id="tplplumb_zp_img" class="dashui-tpl" data-dashui-set="plumb" data-dashui-name="ZP_img"
+        data-dashui-attrs="image/image;">
+    <div class = "dashui-widget <%== this.data.attr('class') %> plumb_wg no_rerender" style="width: 50px; height: 50px;" id="<%= this.data.attr('wid') %>" <%= (el) -> dui.binds.plumb.zp_img(el, data) %>>
+        <div id="<%= this.data.attr('wid') %>" class="dashui-widget-body" style="text-align:center">
+               <img id="<%= this.data.attr('wid') %>_img" alt="no image" style="position: absolute ;top:0; right: 0; height: 100%; width: 100%; z-index:1"/>
+        </div>
+    </div>
+
+
+</script>
+
+<script type="text/ejs" id="tplplumb_valve" class="dashui-tpl" data-dashui-set="plumb" data-dashui-name="valve"
+        data-dashui-attrs="hm_id;off/image;on/image;vertical[false]/checkbox;ctrl[true]/checkbox">
+    <div class = "dashui-widget <%== this.data.attr('class') %> plumb_wg no_rerender" style="width: 60px; height: 32px;" id="<%= this.data.attr('wid') %>" <%= (el) -> dui.binds.plumb.valve(el, data) %>>
+        <div class="dashui-widget-body" style="position: relative">
+               <div id="<%= this.data.attr('wid') %>_l" style="position: absolute ;top:0; left: 0; height: 100%; width: 100%; z-index:0" ></div>
+               <div id="<%= this.data.attr('wid') %>_r" style="position: absolute ;top:0; right: 0; height: 100%; width: 100%; z-index:0"></div>
+               <img id="<%= this.data.attr('wid') %>_img" alt="no image" style="position: absolute ;top:0; right: 0; height: 100%; width: 100%; z-index:1"/>
+        </div>
+    </div>
+
+
+</script>
+
