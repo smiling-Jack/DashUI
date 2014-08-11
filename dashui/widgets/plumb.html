@@ -21,7 +21,7 @@
 <script type="text/ejs" id="tplplumb_pump" class="dashui-tpl" data-dashui-set="plumb" data-dashui-name="Pumpe"
         data-dashui-attrs="hm_id;standart['blue']/color;stroke;_no_resize[true]/hidden">
     <div class = "dashui-widget <%== this.data.attr('class') %> plumb_wg no_rerender" style="resize:none width: 60px; height: 30px; background-color: #333; color: #eee; border: 2px dashed red; opacity:0.8;" id="<%= this.data.attr('wid') %>" <%= (el) -> dui.binds.plumb.pumpe(el,data) %>>
-        <div id="<%= this.data.attr('wid') %>" class="dashui-widget-body" style="text-align:center">
+        <div id="<%= this.data.attr('wid') %>_body" class="dashui-widget-body" style="text-align:center">
                 <b>Pumpe</b><br/>
         </div>
     </div>
@@ -32,7 +32,7 @@
 <script type="text/ejs" id="tplplumb_zp" class="dashui-tpl" data-dashui-set="plumb" data-dashui-name="ZP"
                  data-dashui-attrs="_no_resize[true]/hidden">
     <div class = "dashui-widget <%== this.data.attr('class') %> plumb_wg no_rerender" style="width: 30px; height: 30px; background-color: #333; color: #eee; border: 2px dashed red; opacity:0.8;" id="<%= this.data.attr('wid') %>" <%= (el) -> dui.binds.plumb.zp(el) %>>
-        <div id="<%= this.data.attr('wid') %>" class="dashui-widget-body" style="text-align:center">
+        <div id="<%= this.data.attr('wid') %>_body" class="dashui-widget-body" style="text-align:center">
                 <b>ZP</b><br/>
         </div>
     </div>
@@ -43,8 +43,29 @@
 <script type="text/ejs" id="tplplumb_zp_img" class="dashui-tpl" data-dashui-set="plumb" data-dashui-name="ZP_img"
         data-dashui-attrs="image/image;">
     <div class = "dashui-widget <%== this.data.attr('class') %> plumb_wg no_rerender" style="width: 50px; height: 50px;" id="<%= this.data.attr('wid') %>" <%= (el) -> dui.binds.plumb.zp_img(el, data) %>>
-        <div id="<%= this.data.attr('wid') %>" class="dashui-widget-body" style="text-align:center">
+        <div id="<%= this.data.attr('wid') %>_body" class="dashui-widget-body" style="text-align:center">
                <img id="<%= this.data.attr('wid') %>_img" alt="no image" style="position: absolute ;top:0; right: 0; height: 100%; width: 100%; z-index:1"/>
+        </div>
+    </div>
+
+
+</script>
+<script type="text/ejs" id="tplplumb_zp_i_sprinkler" class="dashui-tpl" data-dashui-set="plumb" data-dashui-name="ZP_I_sprinkler"
+        data-dashui-attrs="stroke[10];start[0];ende[180];time[4]">
+    <div class = "dashui-widget <%== this.data.attr('class') %> plumb_wg no_rerender" style="width: 50px; height: 50px;" id="<%= this.data.attr('wid') %>" <%= (el) -> dui.binds.plumb.zp_i_sprinkler(el, data) %>>
+        <div id="<%= this.data.attr('wid')%>_body" class="dashui-widget-body" style="text-align:center">
+
+        </div>
+    </div>
+
+
+</script>
+
+<script type="text/ejs" id="tplplumb_zp_r_sprinkler" class="dashui-tpl" data-dashui-set="plumb" data-dashui-name="ZP_R_sprinkler"
+        data-dashui-attrs="stroke[10];start[0];ende[180];time[4]">
+    <div class = "dashui-widget <%== this.data.attr('class') %> plumb_wg no_rerender" style="width: 50px; height: 50px;" id="<%= this.data.attr('wid') %>" <%= (el) -> dui.binds.plumb.zp_r_sprinkler(el, data) %>>
+        <div id="<%= this.data.attr('wid')%>_body" class="dashui-widget-body" style="text-align:center">
+
         </div>
     </div>
 
